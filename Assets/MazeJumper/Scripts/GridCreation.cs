@@ -7,12 +7,11 @@ public class GridCreation : MonoBehaviour {
     public int gridColumn;
     public int gridRow;
     public GameObject cube;
-    public bool oneTimeCreation;
 
     // Use this for initialization
     void Start ()
     {
-        if (!Application.isPlaying && oneTimeCreation == false)
+        if (!Application.isPlaying)
         {
 
             GameObject[,] grid = new GameObject[gridRow, gridColumn];
@@ -24,7 +23,6 @@ public class GridCreation : MonoBehaviour {
                     grid[i, j] = (GameObject)Instantiate(cube, new Vector3(i, 0, j), Quaternion.identity);
                 }
             }
-            oneTimeCreation = true;
         }
     }
 	
