@@ -6,12 +6,12 @@ public class InGameMenu : MonoBehaviour {
 
     public GameObject canvas;
 
-    public void onExit()
+    public void OnExit()
     {
         Application.Quit();
     }
 
-    public void onMainMenu()
+    public void OnMainMenu()
     {
         SceneManager.LoadScene("Main Menu");
         if (Time.timeScale == 0)
