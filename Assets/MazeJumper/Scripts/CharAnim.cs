@@ -82,7 +82,7 @@ public class CharAnim : MonoBehaviour {
         }
         else if (intangible)
         {
-            source.PlayOneShot(portalSound,0.1f);
+            //source.PlayOneShot(portalSound,0.1f);
             speed = 4;
             foreach (SkinnedMeshRenderer render in listOfMeshRender)
             {

@@ -5,7 +5,21 @@ public class CubeFunctions : MonoBehaviour {
 
     Vector3 direction;
     Vector3 targetPos;
-    
+
+    public ParticleSystem portalParticle;
+    public ParticleSystem.EmissionModule portalEmmod;
+
+    void EnablePortal(Collider gridDetect)
+    {
+        portalParticle = gridDetect.gameObject.GetComponentInChildren<ParticleSystem>();
+        portalEmmod = portalParticle.emission;
+        portalEmmod.enabled = true;
+    }
+
+    void DisablePortal()
+    {
+        portalEmmod.enabled = false;
+    }
 
     void OnTriggerEnter(Collider gridDetect)
     {
@@ -24,8 +38,10 @@ public class CubeFunctions : MonoBehaviour {
 
         else if (gridDetect.gameObject.tag == "left")
         {
+            EnablePortal(gridDetect);
             portalMovement(Vector3.back, gridDetect);
             direction = Vector3.back;
+            DisablePortal();
         }
 
         else if (gridDetect.gameObject.tag == "up")

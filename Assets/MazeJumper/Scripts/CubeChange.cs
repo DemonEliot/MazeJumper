@@ -12,7 +12,7 @@ public class CubeChange : MonoBehaviour {
     void Start()
     {
         //Debug.Log("Script Running");
-        if (!Application.isPlaying)
+        if (Application.isEditor)
         {
             //Debug.Log("Application Is Not Running");
             rightCubeList = GameObject.FindGameObjectsWithTag("right");
