@@ -104,7 +104,7 @@ public class CharAnim : MonoBehaviour {
 
     void Move(Vector3 moving)
     {
-
+        //TODO change so input is ignored when moving without using time
         //The player moves one co-ordinate at a time.
         pos += moving;
         isWalking = true;
@@ -116,15 +116,17 @@ public class CharAnim : MonoBehaviour {
 
     void ray(Vector3 rayCheck)
     {
+        
         if (intangible == false)
         {
             Ray emptyCheck = new Ray(transform.position, rayCheck);
-            Debug.DrawRay(transform.position, rayCheck * 1f);
 
+            Debug.DrawRay(transform.position, rayCheck * 1f, Color.red);
             //For everything that the raycast hits, starting from the player and going 1 square...
             foreach (RaycastHit hit in Physics.RaycastAll(emptyCheck, 1f))
             {
                 //if it hits something, not including the player or floor they're standing on...
+                //TODO change so uses layer mask instead
                 if (hit.transform != transform && hit.transform.position != transform.position)
                 {
                     Rotate(rayCheck);

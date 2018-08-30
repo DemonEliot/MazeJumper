@@ -8,6 +8,7 @@ public class CubeFunctions : MonoBehaviour {
 
     public ParticleSystem portalParticle;
     public ParticleSystem.EmissionModule portalEmmod;
+    public GameObject endOfLevelCanvas;
 
     void EnablePortal(Collider gridDetect)
     {
@@ -38,10 +39,10 @@ public class CubeFunctions : MonoBehaviour {
 
         else if (gridDetect.gameObject.tag == "left")
         {
-            EnablePortal(gridDetect);
+            //EnablePortal(gridDetect);
             portalMovement(Vector3.back, gridDetect);
             direction = Vector3.back;
-            DisablePortal();
+            //DisablePortal();
         }
 
         else if (gridDetect.gameObject.tag == "up")
@@ -54,6 +55,17 @@ public class CubeFunctions : MonoBehaviour {
         else if (gridDetect.gameObject.tag == "gate")
         {
             GetComponent<CharAnim>().intangible = false;
+        }       
+        
+        //will spawn the level end canvas.
+        else if (gridDetect.gameObject.tag == "crystal" && gameObject.GetComponent<CharAnim>().intangible == false)
+        {
+            endOfLevelCanvas.SetActive(true);
+            //TODO redo breadcrumb mode
+            //gameObject.GetComponent<BreadcrumbMode>().ps.Clear();
+
+            //TODO make a less messt end of level
+            Time.timeScale = 0;
         }
 
     }
