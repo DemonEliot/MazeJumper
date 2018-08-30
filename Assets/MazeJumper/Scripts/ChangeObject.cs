@@ -12,6 +12,10 @@ public class ChangeObject : MonoBehaviour {
     private bool crossed = false;
     private Vector3 currentPos;
 
+    // These game objects will be used for the tree. These are nodes for what is in that direction.
+    // Just going to comment it out for the moment... (Because of pushing this to Master Branch)
+    // public GameObject up, right, down, left;
+
     // Use this for initialization
     void Start ()
     {
