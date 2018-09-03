@@ -51,13 +51,13 @@ public class ToonCharacterController:MonoBehaviour{
     
     public void Start() {
     	if(root == null)
-     	root = transform.FindChild("Root");
+     	root = transform.Find("Root");
      	if(projector == null)
-     	projector = transform.FindChild("Blob Shadow Projector");
+     	projector = transform.Find("Blob Shadow Projector");
      	if(_model == null)
-     	_model = transform.FindChild("MicroMale").gameObject;
+     	_model = transform.Find("MicroMale").gameObject;
      	if(_headBone == null)
-     	_headBone = transform.FindChild("Head");
+     	_headBone = transform.Find("Head");
     	boneRig = gameObject.GetComponentsInChildren<Rigidbody>(); 
     	disableRagdoll();
     	//Blinking
@@ -147,7 +147,7 @@ public class ToonCharacterController:MonoBehaviour{
     				if(force.magnitude > 0)
     				h.GetComponent<Rigidbody>().AddForce(force*UnityEngine.Random.value);
     				h.GetComponent<Rigidbody>().AddTorque(new Vector3((float)UnityEngine.Random.Range(-10, 10),(float)UnityEngine.Random.Range(-10, 10),(float)UnityEngine.Random.Range(-10, 10)));
-					ParticleSystem.MainModule main =  h.transform.FindChild("Head PS").GetComponent<ParticleSystem>().main; 
+					ParticleSystem.MainModule main =  h.transform.Find("Head PS").GetComponent<ParticleSystem>().main; 
 						main.startColor = _bloodColor;
     				StartCoroutine(EnableCollisions(gameObject.GetComponent<Collider>(), h.GetComponent<Collider>()));
     			}else{
