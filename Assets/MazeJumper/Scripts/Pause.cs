@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//TODO Combine with other UI scripts
+
 public class Pause : MonoBehaviour {
 
     public GameObject canvas;

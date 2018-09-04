@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO Combine with other UI scripts
+// Also, may get rid of this in the future when I tutorial elements of the game get redesigned.
+
 public class TutorialCanvas : MonoBehaviour {
 
     public GameObject canvas, text1, text2, text3;
@@ -35,6 +38,7 @@ public class TutorialCanvas : MonoBehaviour {
 
     void Update()
     {
+        // Tracks player position and then shows tutorial messages when the player is in certain locations.
         pos = player.transform.position;
 
         if (pos.x >= 2.9 && pos.x <= 3.1 && pos.z <= 1.1 && pos.z >= 0.9 &&  !check)

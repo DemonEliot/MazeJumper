@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TreeNodes : MonoBehaviour {
 
+    // Just started trying to design a possible way of adding the cubes to an array and using a tree/node based way of navigating the maze.
+
     private GameObject[] startList;
     private GameObject startCube;
 
@@ -29,7 +31,6 @@ public class TreeNodes : MonoBehaviour {
 
     void CreateTree ()
     {
-
         //startCube.GetComponent<ChangeObject>().up
     }
 

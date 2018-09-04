@@ -2,6 +2,9 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+//TODO Combine with other UI scripts
+// Scipts for in game menu behaviour. 
+
 public class InGameMenu : MonoBehaviour {
 
     public GameObject canvas;

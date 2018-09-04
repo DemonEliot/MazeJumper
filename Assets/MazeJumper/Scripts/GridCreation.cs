@@ -4,6 +4,8 @@ using System.Collections;
 [ExecuteInEditMode]
 public class GridCreation : MonoBehaviour {
 
+    // Just define how many columns and rows in the public editor, and then drag the gameobject into the scene to instantly create the grid.
+
     public int gridColumn;
     public int gridRow;
     public GameObject cube;
@@ -11,7 +13,7 @@ public class GridCreation : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        if (!Application.isPlaying)
+        if (Application.isEditor)
         {
 
             GameObject[,] grid = new GameObject[gridRow, gridColumn];
@@ -26,9 +28,4 @@ public class GridCreation : MonoBehaviour {
         }
     }
 	
-	// Update is called once per frame
-	void Update ()
-    {
-        
-    }
 }

@@ -5,6 +5,9 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class CubeChange : MonoBehaviour {
 
+    // This script is attached to an empty gameobject called GameChange.
+    // It is used to update all cubes in the scene to the latest prefab (because the cubes are clones, they are no longer attached to their prefabs...)
+
     GameObject[] rightCubeList, leftCubeList, upCubeList, downCubeList, gateCubeList, floorCubeList;
     public GameObject[] newCubeList = new GameObject[6];
 

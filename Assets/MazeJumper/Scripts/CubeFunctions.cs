@@ -10,44 +10,46 @@ public class CubeFunctions : MonoBehaviour {
     public ParticleSystem.EmissionModule portalEmmod;
     public GameObject endOfLevelCanvas;
 
-    void EnablePortal(Collider gridDetect)
-    {
-        portalParticle = gridDetect.gameObject.GetComponentInChildren<ParticleSystem>();
-        portalEmmod = portalParticle.emission;
-        portalEmmod.enabled = true;
-    }
+    // Was trying to get the portals to appear and disappear, but it doesn't work yet. 
 
-    void DisablePortal()
-    {
-        portalEmmod.enabled = false;
-    }
+    //void EnablePortal(Collider gridDetect)
+    //{
+    //    portalParticle = gridDetect.gameObject.GetComponentInChildren<ParticleSystem>();
+    //    portalEmmod = portalParticle.emission;
+    //    portalEmmod.enabled = true;
+    //}
+
+    //void DisablePortal()
+    //{
+    //    portalEmmod.enabled = false;
+    //}
 
     void OnTriggerEnter(Collider gridDetect)
     {
         //Detects if the player collides with a "portal" and then moves them in the correct direction.
         if (gridDetect.gameObject.tag == "right")
         {
-            portalMovement(Vector3.forward, gridDetect);
+            PortalMovement(Vector3.forward, gridDetect);
             direction = Vector3.forward;
         }
 
         else if (gridDetect.gameObject.tag == "down")
         {
-            portalMovement(Vector3.right, gridDetect);
+            PortalMovement(Vector3.right, gridDetect);
             direction = Vector3.right;
         }
 
         else if (gridDetect.gameObject.tag == "left")
         {
             //EnablePortal(gridDetect);
-            portalMovement(Vector3.back, gridDetect);
+            PortalMovement(Vector3.back, gridDetect);
             direction = Vector3.back;
             //DisablePortal();
         }
 
         else if (gridDetect.gameObject.tag == "up")
         {
-            portalMovement(Vector3.left, gridDetect);
+            PortalMovement(Vector3.left, gridDetect);
             direction = Vector3.left;
         }
 
@@ -64,13 +66,13 @@ public class CubeFunctions : MonoBehaviour {
             //TODO redo breadcrumb mode
             //gameObject.GetComponent<BreadcrumbMode>().ps.Clear();
 
-            //TODO make a less messt end of level
+            //TODO make a less messy end of level
             Time.timeScale = 0;
         }
 
     }
 
-    void portalMovement(Vector3 direction, Collider portal)
+    void PortalMovement(Vector3 direction, Collider portal)
     {
         //Makes the player "intangible", moves them one square in the direction the portal faces.
         GetComponent<CharAnim>().intangible = true;
