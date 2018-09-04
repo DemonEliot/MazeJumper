@@ -38,6 +38,7 @@ public class ChangeObject : MonoBehaviour {
         if (Application.isEditor)
         {
             // This snaps to a grid when moving the cubes, but only if it is the parent gameobject.
+            //TODO make the cod ework when under an envioronment gameobject
             if (transform.parent == null)
             {
                 currentPos = transform.position;
@@ -46,6 +47,7 @@ public class ChangeObject : MonoBehaviour {
 
             // For ease of use, I added this script to both the cubes, and the components inside the cubes. (For ease of level editing, you can click on the top layer and change it from there...)
             // Change the number in the public editor and tick oneTimeCreation to change the cube.
+            //TODO make a dropdown menu in the editor
             if (oneTimeCreation == false)
             {
                 for (int i = 0; i < 7; i++)
