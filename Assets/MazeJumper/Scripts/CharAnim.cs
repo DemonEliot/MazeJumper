@@ -4,7 +4,7 @@ using System.Collections;
 public class CharAnim : MonoBehaviour {
 
     private Animator animComp;
-    private int animState;
+    private float animState;
     private bool isWalking;
     public Vector3 pos;
     float speed = 2;
@@ -12,13 +12,19 @@ public class CharAnim : MonoBehaviour {
     public bool intangible = false;
     public bool playerMove = true;
 
+    // Variables for particle use
     public SkinnedMeshRenderer[] listOfMeshRender;
     public ParticleSystem particle;
     public ParticleSystem.EmissionModule emmod;
 
-    public AudioClip portalSound;
-    private AudioSource source;
-    
+    // Sounds
+    //public AudioClip portalSound;
+    //private AudioSource source;
+
+    // Mobile
+    private Vector2 touchOrigin = -Vector2.one;
+    int horizontal = 0;
+    int vertical = 0;
 
     // Use this for initialization
     void Start () {
@@ -29,12 +35,83 @@ public class CharAnim : MonoBehaviour {
         particle = GetComponentInChildren<ParticleSystem>();
         emmod = particle.emission;
 
-        source = GetComponent<AudioSource>();
+        //source = GetComponent<AudioSource>();
 
     }
 	
+    //Attempt move for mobile, convert swipes into vector directions to check.
+    void AttemptMove(int horizontal, int vertical)
+    {
+        if (horizontal == 1)
+        {
+            ray(Vector3.forward);
+        }
+
+        else if (horizontal == -1)
+        {
+            ray(Vector3.back);
+        }
+
+        else if (vertical == 1)
+        {
+            ray(Vector3.left);
+        }
+
+        else if (vertical == -1)
+        {
+            ray(Vector3.right);
+        }
+    }
+
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        //Check if Input has registered more than zero touches
+        if (Input.touchCount > 0)
+        {
+            //Store the first touch detected.
+            Touch myTouch = Input.touches[0];
+
+            //Check if the phase of that touch equals Began
+            if (myTouch.phase == TouchPhase.Began)
+            {
+                //If so, set touchOrigin to the position of that touch
+                touchOrigin = myTouch.position;
+            }
+
+            //If the touch phase is not Began, and instead is equal to Ended and the x of touchOrigin is greater or equal to zero:
+            else if (myTouch.phase == TouchPhase.Ended && touchOrigin.x >= 0)
+            {
+                //Set touchEnd to equal the position of this touch
+                Vector2 touchEnd = myTouch.position;
+
+                //Calculate the difference between the beginning and end of the touch on the x axis.
+                float x = touchEnd.x - touchOrigin.x;
+
+                //Calculate the difference between the beginning and end of the touch on the y axis.
+                float y = touchEnd.y - touchOrigin.y;
+
+                //Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.
+                touchOrigin.x = -1;
+
+                //Check if the difference along the x axis is greater than the difference along the y axis.
+                if (Mathf.Abs(x) > Mathf.Abs(y))
+                    //If x is greater than zero, set horizontal to 1, otherwise set it to -1
+                    horizontal = x > 0 ? 1 : -1;
+                else
+                    //If y is greater than zero, set horizontal to 1, otherwise set it to -1
+                    vertical = y > 0 ? 1 : -1;
+            }
+        }
+
+        //Check if we have a non-zero value for horizontal or vertical
+        if (horizontal != 0 || vertical != 0)
+        {
+            AttemptMove(horizontal, vertical);
+            horizontal = 0;
+            vertical = 0;
+        }
+
         //Before any movement, a ray is used to detect if the player can move there.
         if (Input.GetKey (KeyCode.RightArrow) && time < Time.time && playerMove)
         {
@@ -61,13 +138,13 @@ public class CharAnim : MonoBehaviour {
         {
             isWalking = false;
             animState = 0;
-            animComp.SetInteger("JimState", animState);
+            animComp.SetFloat("Speed", animState);
         }
 
         // If the player is not teleporting through portals...
         if (!intangible)
         {
-            source.Stop();
+            //source.Stop();
             speed = 2;
             if (transform.position.y < 0.49)
             {
@@ -109,7 +186,7 @@ public class CharAnim : MonoBehaviour {
         pos += moving;
         isWalking = true;
         animState = 1;
-        animComp.SetInteger("JimState", animState);
+        animComp.SetFloat("Speed", animState);
         time = Time.time + 0.3f;
        
     }

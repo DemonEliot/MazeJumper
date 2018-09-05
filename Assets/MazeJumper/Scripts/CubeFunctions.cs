@@ -6,7 +6,6 @@ public class CubeFunctions : MonoBehaviour {
     Vector3 direction;
     Vector3 targetPos;
 
-    public ParticleSystem portalParticle;
     public ParticleSystem.EmissionModule portalEmmod;
     public GameObject endOfLevelCanvas;
 
