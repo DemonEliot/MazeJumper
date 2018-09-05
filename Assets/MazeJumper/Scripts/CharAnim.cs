@@ -4,7 +4,7 @@ using System.Collections;
 public class CharAnim : MonoBehaviour {
 
     private Animator animComp;
-    private int animState;
+    private float animState;
     private bool isWalking;
     public Vector3 pos;
     float speed = 2;
@@ -18,8 +18,8 @@ public class CharAnim : MonoBehaviour {
     public ParticleSystem.EmissionModule emmod;
 
     // Sounds
-    public AudioClip portalSound;
-    private AudioSource source;
+    //public AudioClip portalSound;
+    //private AudioSource source;
 
     // Mobile
     private Vector2 touchOrigin = -Vector2.one;
@@ -35,7 +35,7 @@ public class CharAnim : MonoBehaviour {
         particle = GetComponentInChildren<ParticleSystem>();
         emmod = particle.emission;
 
-        source = GetComponent<AudioSource>();
+        //source = GetComponent<AudioSource>();
 
     }
 	
@@ -138,13 +138,13 @@ public class CharAnim : MonoBehaviour {
         {
             isWalking = false;
             animState = 0;
-            animComp.SetInteger("JimState", animState);
+            animComp.SetFloat("Speed", animState);
         }
 
         // If the player is not teleporting through portals...
         if (!intangible)
         {
-            source.Stop();
+            //source.Stop();
             speed = 2;
             if (transform.position.y < 0.49)
             {
@@ -186,7 +186,7 @@ public class CharAnim : MonoBehaviour {
         pos += moving;
         isWalking = true;
         animState = 1;
-        animComp.SetInteger("JimState", animState);
+        animComp.SetFloat("Speed", animState);
         time = Time.time + 0.3f;
        
     }
