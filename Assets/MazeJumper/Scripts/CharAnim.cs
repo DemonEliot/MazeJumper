@@ -7,8 +7,10 @@ public class CharAnim : MonoBehaviour {
     private float animState;
     private bool isWalking;
     public Vector3 pos;
-    float speed = 2;
-    float time = 0;
+    private Vector3 startPos;
+    public Quaternion startRot;
+    private float speed = 2;
+    private float time = 0;
     public bool intangible = false;
     public bool playerMove = true;
 
@@ -21,116 +23,48 @@ public class CharAnim : MonoBehaviour {
     //public AudioClip portalSound;
     //private AudioSource source;
 
-    // Mobile
-    private Vector2 touchOrigin = -Vector2.one;
-    int horizontal = 0;
-    int vertical = 0;
+    private GameObject mainCamera;
 
     // Use this for initialization
     void Start () {
 
         animComp = this.GetComponent<Animator>();
         pos = transform.position;
+        startPos = transform.position;
+        startRot = transform.rotation;
         listOfMeshRender = GetComponentsInChildren<SkinnedMeshRenderer>();
         particle = GetComponentInChildren<ParticleSystem>();
         emmod = particle.emission;
+        mainCamera = GameObject.FindWithTag("MainCamera");
 
-        //source = GetComponent<AudioSource>();
-
-    }
-	
-    //Attempt move for mobile, convert swipes into vector directions to check.
-    void AttemptMove(int horizontal, int vertical)
-    {
-        if (horizontal == 1)
-        {
-            ray(Vector3.forward);
-        }
-
-        else if (horizontal == -1)
-        {
-            ray(Vector3.back);
-        }
-
-        else if (vertical == 1)
-        {
-            ray(Vector3.left);
-        }
-
-        else if (vertical == -1)
-        {
-            ray(Vector3.right);
-        }
     }
 
 	// Update is called once per frame
 	void Update ()
     {
-        //Check if Input has registered more than zero touches
-        if (Input.touchCount > 0)
-        {
-            //Store the first touch detected.
-            Touch myTouch = Input.touches[0];
-
-            //Check if the phase of that touch equals Began
-            if (myTouch.phase == TouchPhase.Began)
-            {
-                //If so, set touchOrigin to the position of that touch
-                touchOrigin = myTouch.position;
-            }
-
-            //If the touch phase is not Began, and instead is equal to Ended and the x of touchOrigin is greater or equal to zero:
-            else if (myTouch.phase == TouchPhase.Ended && touchOrigin.x >= 0)
-            {
-                //Set touchEnd to equal the position of this touch
-                Vector2 touchEnd = myTouch.position;
-
-                //Calculate the difference between the beginning and end of the touch on the x axis.
-                float x = touchEnd.x - touchOrigin.x;
-
-                //Calculate the difference between the beginning and end of the touch on the y axis.
-                float y = touchEnd.y - touchOrigin.y;
-
-                //Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.
-                touchOrigin.x = -1;
-
-                //Check if the difference along the x axis is greater than the difference along the y axis.
-                if (Mathf.Abs(x) > Mathf.Abs(y))
-                    //If x is greater than zero, set horizontal to 1, otherwise set it to -1
-                    horizontal = x > 0 ? 1 : -1;
-                else
-                    //If y is greater than zero, set horizontal to 1, otherwise set it to -1
-                    vertical = y > 0 ? 1 : -1;
-            }
-        }
-
-        //Check if we have a non-zero value for horizontal or vertical
-        if (horizontal != 0 || vertical != 0)
-        {
-            AttemptMove(horizontal, vertical);
-            horizontal = 0;
-            vertical = 0;
-        }
-
         //Before any movement, a ray is used to detect if the player can move there.
-        if (Input.GetKey (KeyCode.RightArrow) && time < Time.time && playerMove)
+        if (Input.GetKey (KeyCode.UpArrow) && time < Time.time && playerMove)
         {
-            ray(Vector3.forward);
+            //Up
+            Ray(Vector3.forward);
         }
 
-        else if (Input.GetKey(KeyCode.DownArrow) && time < Time.time && playerMove)
+        else if (Input.GetKey(KeyCode.RightArrow) && time < Time.time && playerMove)
         {
-            ray(Vector3.right);
+            //Right
+            Ray(Vector3.right);
         }
         
-        else if (Input.GetKey(KeyCode.LeftArrow) && time < Time.time && playerMove)
+        else if (Input.GetKey(KeyCode.DownArrow) && time < Time.time && playerMove)
         {
-            ray(Vector3.back);
+            //Down
+            Ray(Vector3.back);
         }
 
-        else if (Input.GetKey(KeyCode.UpArrow) && time < Time.time && playerMove)
+        else if (Input.GetKey(KeyCode.LeftArrow) && time < Time.time && playerMove)
         {
-            ray(Vector3.left);
+            //Left
+            Ray(Vector3.left);
         }
 
         //If the player is walking and they've finished moving, then make them stop walking.
@@ -169,8 +103,34 @@ public class CharAnim : MonoBehaviour {
         }
         //Keeps the player to a grid based movement.
         transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * speed);
+    }
 
+    public void Movement(string direction)
+    {
+        switch (direction)
+        {
+            case ("Up"):
+                Ray(Vector3.forward);
+                break;
+            case ("Down"):
+                Ray(Vector3.back);
+                break;
+            case ("Right"):
+                Ray(Vector3.right);
+                break;
+            case ("Left"):
+                Ray(Vector3.left);
+                break;
+            default:
+                break;
+        }
+    }
 
+    public void StopMovement()
+    {
+        isWalking = false;
+        animState = 0;
+        animComp.SetFloat("Speed", animState);
     }
 
     void Rotate(Vector3 facing)
@@ -191,7 +151,7 @@ public class CharAnim : MonoBehaviour {
        
     }
 
-    void ray(Vector3 rayCheck)
+    void Ray(Vector3 rayCheck)
     {
         
         if (intangible == false)
@@ -210,6 +170,27 @@ public class CharAnim : MonoBehaviour {
                     Move(rayCheck);
                 }
             }
+        }
+    }
+
+    public void CharReset(GameObject environment)
+    {
+        StopMovement();
+        transform.position = startPos;
+        pos = startPos;
+        transform.rotation = startRot;
+        intangible = false;
+        playerMove = true;
+        particle.Clear();
+
+        if (mainCamera.GetComponent<CameraMove>().camMove)
+        {
+            mainCamera.GetComponent<CameraMove>().CamMode();
+        }
+
+        foreach (Transform child in environment.transform)
+        {
+            child.GetComponent<ChangeObject>().ResetCrosses();
         }
     }
 }

@@ -16,7 +16,7 @@ public class ChangeObject : MonoBehaviour {
     // Just going to comment it out for the moment... (Because of pushing this to Master Branch)
     // public GameObject up, right, down, left;
 
-    void OnMouseDown()
+    void OnMouseUpAsButton()
     {
         // When clicking on a block (this script is attached to all the cubes), either create a cross on that cube, or destroy the cross.
         if (!crossed)
@@ -32,13 +32,21 @@ public class ChangeObject : MonoBehaviour {
 
     }
 
+    public void ResetCrosses()
+    {
+        if (crossed)
+        {
+            Destroy(instantiatedCross);
+            crossed = !crossed;
+        }
+    }
+
 	// Update is called once per frame
 	void Update ()
     {
         if (Application.isEditor)
         {
             // This snaps to a grid when moving the cubes, but only if it is the parent gameobject.
-            //TODO make the cod ework when under an envioronment gameobject
             if (transform.parent == null)
             {
                 currentPos = transform.position;
@@ -47,7 +55,6 @@ public class ChangeObject : MonoBehaviour {
 
             // For ease of use, I added this script to both the cubes, and the components inside the cubes. (For ease of level editing, you can click on the top layer and change it from there...)
             // Change the number in the public editor and tick oneTimeCreation to change the cube.
-            //TODO make a dropdown menu in the editor
             if (oneTimeCreation == false)
             {
                 for (int i = 0; i < 7; i++)

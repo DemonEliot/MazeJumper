@@ -7,7 +7,7 @@ public class CubeFunctions : MonoBehaviour {
     Vector3 targetPos;
 
     public ParticleSystem.EmissionModule portalEmmod;
-    public GameObject endOfLevelCanvas;
+    private GameObject UIContainer;
 
     // Was trying to get the portals to appear and disappear, but it doesn't work yet. 
 
@@ -23,6 +23,11 @@ public class CubeFunctions : MonoBehaviour {
     //    portalEmmod.enabled = false;
     //}
 
+    private void Start()
+    {
+        UIContainer = GameObject.Find("UIGameContainer");
+    }
+
     void OnTriggerEnter(Collider gridDetect)
     {
         //Detects if the player collides with a "portal" and then moves them in the correct direction.
@@ -30,12 +35,14 @@ public class CubeFunctions : MonoBehaviour {
         {
             PortalMovement(Vector3.forward, gridDetect);
             direction = Vector3.forward;
+            GetComponent<CharAnim>().StopMovement();
         }
 
         else if (gridDetect.gameObject.tag == "down")
         {
             PortalMovement(Vector3.right, gridDetect);
             direction = Vector3.right;
+            GetComponent<CharAnim>().StopMovement();
         }
 
         else if (gridDetect.gameObject.tag == "left")
@@ -43,6 +50,7 @@ public class CubeFunctions : MonoBehaviour {
             //EnablePortal(gridDetect);
             PortalMovement(Vector3.back, gridDetect);
             direction = Vector3.back;
+            GetComponent<CharAnim>().StopMovement();
             //DisablePortal();
         }
 
@@ -50,25 +58,28 @@ public class CubeFunctions : MonoBehaviour {
         {
             PortalMovement(Vector3.left, gridDetect);
             direction = Vector3.left;
+            GetComponent<CharAnim>().StopMovement();
         }
 
         //Colliding with a gate makes the player "reappear".
         else if (gridDetect.gameObject.tag == "gate")
         {
             GetComponent<CharAnim>().intangible = false;
-        }       
-        
+            //Just make sure that the gameobject appears in the right place...
+            GetComponent<CharAnim>().StopMovement();
+            gameObject.transform.position = new Vector3(gridDetect.transform.position.x, gameObject.transform.position.y, gridDetect.transform.position.z);
+        }
+
         //will spawn the level end canvas.
         else if (gridDetect.gameObject.tag == "crystal" && gameObject.GetComponent<CharAnim>().intangible == false)
         {
-            endOfLevelCanvas.SetActive(true);
+            UIContainer.GetComponent<UI>().LevelEnd();
             //TODO redo breadcrumb mode
             //gameObject.GetComponent<BreadcrumbMode>().ps.Clear();
 
             //TODO make a less messy end of level
-            Time.timeScale = 0;
         }
-
+    
     }
 
     void PortalMovement(Vector3 direction, Collider portal)
