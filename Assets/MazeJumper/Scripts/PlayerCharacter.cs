@@ -1,85 +1,81 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharAnim : MonoBehaviour {
+public class PlayerCharacter : MonoBehaviour {
 
+    // Variables for Animation
     private Animator animComp;
     private float animState;
-    private bool isWalking;
-    public Vector3 pos;
-    private Vector3 startPos;
-    public Quaternion startRot;
-    private float speed = 2;
-    private float time = 0;
-    public bool intangible = false;
-    public bool playerMove = true;
+
+    // Variables for Character transformation/rotation
+    private Vector3 playerStartPosition;
+    private Vector3 playerCurrentPosition;
+    private Quaternion playerStartRotation;
+    private bool playerIsWalking = false;
+    private float playerSpeed = 2;
+    private bool playerIsIntangible = false;
+    private bool playerCanMove = true;
 
     // Variables for particle use
-    public SkinnedMeshRenderer[] listOfMeshRender;
-    public ParticleSystem particle;
-    public ParticleSystem.EmissionModule emmod;
-
-    // Sounds
-    //public AudioClip portalSound;
-    //private AudioSource source;
+    private SkinnedMeshRenderer[] listOfMeshRender;
+    private ParticleSystem playerParticle;
+    private ParticleSystem.EmissionModule playerEmmissionModule;
 
     private GameObject mainCamera;
+    private float time = 0;
 
     // Use this for initialization
     void Start () {
-
         animComp = this.GetComponent<Animator>();
-        pos = transform.position;
-        startPos = transform.position;
-        startRot = transform.rotation;
+        playerStartPosition = transform.position;
+        playerCurrentPosition = transform.position;
+        playerStartRotation = transform.rotation;
         listOfMeshRender = GetComponentsInChildren<SkinnedMeshRenderer>();
-        particle = GetComponentInChildren<ParticleSystem>();
-        emmod = particle.emission;
+        playerParticle = GetComponentInChildren<ParticleSystem>();
+        playerEmmissionModule = playerParticle.emission;
         mainCamera = GameObject.FindWithTag("MainCamera");
-
     }
 
 	// Update is called once per frame
 	void Update ()
     {
         //Before any movement, a ray is used to detect if the player can move there.
-        if (Input.GetKey (KeyCode.UpArrow) && time < Time.time && playerMove)
+        if (Input.GetKey (KeyCode.UpArrow) && time < Time.time && playerCanMove)
         {
             //Up
             Ray(Vector3.forward);
         }
 
-        else if (Input.GetKey(KeyCode.RightArrow) && time < Time.time && playerMove)
+        else if (Input.GetKey(KeyCode.RightArrow) && time < Time.time && playerCanMove)
         {
             //Right
             Ray(Vector3.right);
         }
         
-        else if (Input.GetKey(KeyCode.DownArrow) && time < Time.time && playerMove)
+        else if (Input.GetKey(KeyCode.DownArrow) && time < Time.time && playerCanMove)
         {
             //Down
             Ray(Vector3.back);
         }
 
-        else if (Input.GetKey(KeyCode.LeftArrow) && time < Time.time && playerMove)
+        else if (Input.GetKey(KeyCode.LeftArrow) && time < Time.time && playerCanMove)
         {
             //Left
             Ray(Vector3.left);
         }
 
         //If the player is walking and they've finished moving, then make them stop walking.
-        if (isWalking == true && time < Time.time)
+        if (playerIsWalking == true && time < Time.time)
         {
-            isWalking = false;
+            playerIsWalking = false;
             animState = 0;
             animComp.SetFloat("Speed", animState);
         }
 
         // If the player is not teleporting through portals...
-        if (!intangible)
+        if (!playerIsIntangible)
         {
-            //source.Stop();
-            speed = 2;
+            playerSpeed = 2;
             if (transform.position.y < 0.49)
             {
                 transform.position = new Vector3(transform.position.x, 0.49f, transform.position.z);
@@ -87,22 +83,21 @@ public class CharAnim : MonoBehaviour {
             foreach (SkinnedMeshRenderer render in listOfMeshRender)
             {
                 render.enabled = true;
-            }   
-            emmod.enabled = false;
-          
+            }
+            playerEmmissionModule.enabled = false;
         }
-        else if (intangible)
+
+        else if (playerIsIntangible)
         {
-            //source.PlayOneShot(portalSound,0.1f);
-            speed = 4;
+            playerSpeed = 4;
             foreach (SkinnedMeshRenderer render in listOfMeshRender)
             {
                 render.enabled = false;
             }
-            emmod.enabled = true;
+            playerEmmissionModule.enabled = true;
         }
         //Keeps the player to a grid based movement.
-        transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * speed);
+        transform.position = Vector3.MoveTowards(transform.position, playerCurrentPosition, Time.deltaTime * playerSpeed);
     }
 
     public void Movement(string direction)
@@ -128,7 +123,7 @@ public class CharAnim : MonoBehaviour {
 
     public void StopMovement()
     {
-        isWalking = false;
+        playerIsWalking = false;
         animState = 0;
         animComp.SetFloat("Speed", animState);
     }
@@ -143,18 +138,19 @@ public class CharAnim : MonoBehaviour {
     {
         //TODO change so input is ignored when moving without using time
         //The player moves one co-ordinate at a time.
-        pos += moving;
-        isWalking = true;
+        playerCurrentPosition += moving;
+        playerIsWalking = true;
         animState = 1;
         animComp.SetFloat("Speed", animState);
         time = Time.time + 0.3f;
-       
     }
 
+
+    //TODO change so this no longer uses rays/collision, but tree algorithm to move.
     void Ray(Vector3 rayCheck)
     {
         
-        if (intangible == false)
+        if (playerIsIntangible == false)
         {
             Ray emptyCheck = new Ray(transform.position, rayCheck);
 
@@ -173,24 +169,54 @@ public class CharAnim : MonoBehaviour {
         }
     }
 
-    public void CharReset(GameObject environment)
+    public void ResetCharacter(GameObject environment)
     {
         StopMovement();
-        transform.position = startPos;
-        pos = startPos;
-        transform.rotation = startRot;
-        intangible = false;
-        playerMove = true;
-        particle.Clear();
+        transform.position = playerStartPosition;
+        playerCurrentPosition = playerStartPosition;
+        transform.rotation = playerStartRotation;
+        playerIsIntangible = false;
+        playerCanMove = true;
+        playerParticle.Clear();
 
-        if (mainCamera.GetComponent<CameraMove>().camMove)
+        if (mainCamera.GetComponent<CameraMove>().GetCameraMoveBool())
         {
-            mainCamera.GetComponent<CameraMove>().CamMode();
+            mainCamera.GetComponent<CameraMove>().SwitchCameraMode();
         }
 
         foreach (Transform child in environment.transform)
         {
             child.GetComponent<ChangeObject>().ResetCrosses();
         }
+    }
+
+    public void SetPlayerMove(bool state)
+    {
+        playerCanMove = state;
+    }
+
+    public ParticleSystem GetPlayerParticle()
+    {
+        return playerParticle;
+    }
+
+    public bool GetPlayerIsIntangible()
+    {
+        return playerIsIntangible;
+    }
+
+    public void SetPlayerIsIntagible(bool state)
+    {
+        playerIsIntangible = state;
+    }
+
+    public Vector3 GetPlayerCurrentPosition()
+    {
+        return playerCurrentPosition;
+    }
+
+    public void SetPlayerCurrentPosition(Vector3 newPosition)
+    {
+        playerCurrentPosition = newPosition;
     }
 }

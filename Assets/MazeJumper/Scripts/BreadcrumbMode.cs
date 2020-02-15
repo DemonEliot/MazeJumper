@@ -12,7 +12,7 @@ public class BreadcrumbMode : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        ps = GetComponent<CharAnim>().particle;
+        ps = GetComponent<PlayerCharacter>().GetPlayerParticle();
     }
 	
 	// Update is called once per frame
@@ -24,7 +24,7 @@ public class BreadcrumbMode : MonoBehaviour {
             if (!breadcrumbs && counter < 3)
             {
                 // Get the particles, set the lifetime to A LOT, set breadcrumbs as active and increase the counter. Set the time for 5 seconds away
-                ps = GetComponent<CharAnim>().particle;
+                ps = GetComponent<PlayerCharacter>().GetPlayerParticle();
                 ps.startLifetime = 1000f;
                 breadcrumbs = !breadcrumbs;
                 counter++;
@@ -36,7 +36,7 @@ public class BreadcrumbMode : MonoBehaviour {
         {
             // Deactivate breadcrumbs mode and restore the particle lifetime to normal
             breadcrumbs = !breadcrumbs;
-            ps = GetComponent<CharAnim>().particle;
+            ps = GetComponent<PlayerCharacter>().GetPlayerParticle();
             ps.startLifetime = 1;
         }
         if (Input.GetKeyDown(KeyCode.V))
