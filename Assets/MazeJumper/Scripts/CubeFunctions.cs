@@ -3,10 +3,9 @@ using System.Collections;
 
 public class CubeFunctions : MonoBehaviour {
 
-    Vector3 directionToFace;
-    Vector3 targetPosition;
+    private Vector3 directionToFace;
+    private Vector3 targetPosition;
 
-    public ParticleSystem.EmissionModule portalEmmod;
     private GameObject UIContainer;
 
     private void Start()
@@ -84,7 +83,6 @@ public class CubeFunctions : MonoBehaviour {
                 transform.position = targetPosition;
                 targetPosition = transform.position + directionToFace;
                 GetComponent<PlayerCharacter>().SetPlayerCurrentPosition(transform.position + directionToFace);
-               
             }
             gameObject.transform.forward = directionToFace;
         }
