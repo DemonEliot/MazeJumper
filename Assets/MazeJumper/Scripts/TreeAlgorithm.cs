@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TreeNodes : MonoBehaviour {
+public class TreeAlgorithm : MonoBehaviour {
 
     // Just started trying to design a possible way of adding the cubes to an array and using a tree/node based way of navigating the maze.
 
     private GameObject[] startList;
-    private GameObject startCube;
+    private GameObject startNode;
+    private List<GameObject> nodeList;
+    private int keyIndex = 0;
 
 	// Use this for initialization
 	void Start ()
@@ -24,14 +26,17 @@ public class TreeNodes : MonoBehaviour {
             Debug.LogError("Have multiple start locations");
         }
 
-        startCube = startList[0];
+        startNode = startList[0];
 
-        CreateTree();
+        AddNodeToList(startNode);
 	}
 
-    void CreateTree ()
+    void AddNodeToList(GameObject node)
     {
-        //startCube.GetComponent<ChangeObject>().up
+        node.GetComponent<Node>().GiveKeyToNode(keyIndex);
+        keyIndex++;
+        nodeList.Add(node);
     }
 
+    // Need to recusively (starting from startCube) go through each cube
 }
