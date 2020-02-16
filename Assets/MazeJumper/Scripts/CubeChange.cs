@@ -14,12 +14,9 @@ public class CubeChange : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        //Debug.Log("Script Running");
         if (Application.isEditor)
         {
-            //Debug.Log("Application Is Not Running");
             rightCubeList = GameObject.FindGameObjectsWithTag("right");
-            //Debug.Log("rightCubeList length is: " + rightCubeList.Length);
             leftCubeList = GameObject.FindGameObjectsWithTag("left");
             upCubeList = GameObject.FindGameObjectsWithTag("up");
             downCubeList = GameObject.FindGameObjectsWithTag("down");
@@ -69,8 +66,4 @@ public class CubeChange : MonoBehaviour {
             }
         }
     }
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

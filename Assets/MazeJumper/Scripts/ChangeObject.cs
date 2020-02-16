@@ -4,45 +4,47 @@ using System.Collections;
 [ExecuteInEditMode]
 public class ChangeObject : MonoBehaviour {
 
-    public int obj = 0;
-    public GameObject[] list = new GameObject[7];
+    public int cubeIndex = 0;
+    public GameObject[] cubeList = new GameObject[7];
+    public bool oneTimeCreation = false;
+    private Vector3 currentPos;
+
     public GameObject cross;
     private GameObject instantiatedCross;
-    public bool oneTimeCreation = false;
-    private bool crossed = false;
-    private Vector3 currentPos;
+    private bool isCrossed = false;
+
 
     // These game objects will be used for the tree. These are nodes for what is in that direction.
     // Just going to comment it out for the moment... (Because of pushing this to Master Branch)
     // public GameObject up, right, down, left;
 
-    void OnMouseUpAsButton()
+    private void OnMouseUpAsButton()
     {
         // When clicking on a block (this script is attached to all the cubes), either create a cross on that cube, or destroy the cross.
-        if (!crossed)
+        if (!isCrossed)
         {
             instantiatedCross = (GameObject) Instantiate(cross, new Vector3(transform.position.x, 0.6f, transform.position.z), Quaternion.Euler(90, 0, 0));
-            crossed = !crossed;
+            isCrossed = !isCrossed;
         }
         else
         {
             Destroy(instantiatedCross);
-            crossed = !crossed;
+            isCrossed = !isCrossed;
         }
 
     }
 
     public void ResetCrosses()
     {
-        if (crossed)
+        if (isCrossed)
         {
             Destroy(instantiatedCross);
-            crossed = !crossed;
+            isCrossed = !isCrossed;
         }
     }
 
 	// Update is called once per frame
-	void Update ()
+	private void Update ()
     {
         if (Application.isEditor)
         {
@@ -59,11 +61,10 @@ public class ChangeObject : MonoBehaviour {
             {
                 for (int i = 0; i < 7; i++)
                 {
-                    if (i == obj)
+                    if (i == cubeIndex)
                     {
                         // Creates new cube in location of current cube and destroys current cube.
-                        Vector3 t = gameObject.transform.position;
-                        Instantiate(list[i], t, Quaternion.identity);
+                        Instantiate(cubeList[i], gameObject.transform.position, Quaternion.identity);
                         oneTimeCreation = true;
 
                         if (transform.parent == null)
@@ -77,7 +78,6 @@ public class ChangeObject : MonoBehaviour {
                     }
                 }
             }
-            
         }
     }
 }
