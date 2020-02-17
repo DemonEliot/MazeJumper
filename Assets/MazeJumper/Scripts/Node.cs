@@ -7,7 +7,7 @@ public class Node : MonoBehaviour
 
     private int nodeKey;
     private GameObject nodeUp, nodeDown, nodeLeft, nodeRight;
-    private List<GameObject> nodesSentHereList;
+    private List<GameObject> nodesGoesHereList = new List<GameObject>();
     private GameObject environment;
     private GameObject eventSystem;
 
@@ -51,25 +51,25 @@ public class Node : MonoBehaviour
                     if (child.position == this.transform.position + Vector3.forward)
                     {
                         nodeUp = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeSentHere(this.gameObject);
+                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                     }
 
                     else if (child.position == this.transform.position + Vector3.back)
                     {
                         nodeDown = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeSentHere(this.gameObject);
+                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                     }
 
                     else if (child.position == this.transform.position + Vector3.left)
                     {
                         nodeLeft = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeSentHere(this.gameObject);
+                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                     }
 
                     else if (child.position == this.transform.position + Vector3.right)
                     {
                         nodeRight = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeSentHere(this.gameObject);
+                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                     }
                 }
                 break;
@@ -78,7 +78,7 @@ public class Node : MonoBehaviour
             case downTag:
             case leftTag:
             case rightTag:
-                getNextNodeFromPortalMovement();
+                GetNextNodeFromPortalMovement();
                 break;
             default:
                 Debug.Log("This gameobject has an unexpected tag of: " + this.gameObject.tag);
@@ -86,7 +86,7 @@ public class Node : MonoBehaviour
         }
     }
 
-    private void getNextNodeFromPortalMovement()
+    private void GetNextNodeFromPortalMovement()
     {
         Vector3 positionToCheck = this.transform.position;
         Vector3 directionToMove = new Vector3();
@@ -123,7 +123,7 @@ public class Node : MonoBehaviour
                     {
                         // TODO Check if this actually works in C# ... Do I even need to use a list? Can I have a temp variable that points to the acutal Node variable?
                         savedNodeToChild[0] = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeSentHere(this.gameObject);
+                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                     }
                 }
             }
@@ -140,9 +140,9 @@ public class Node : MonoBehaviour
         return nodeKey;
     }
 
-    public void AddNodeSentHere(GameObject node)
+    public void AddNodeGoesHere(GameObject node)
     {
-        nodesSentHereList.Add(node);
+        nodesGoesHereList.Add(node);
     }
 
     public GameObject GetNodeUp()

@@ -50,9 +50,13 @@ public class PlayerCharacter : MonoBehaviour
         eventSystem = GameObject.FindWithTag(eventSystemTag);
     }
 
-    void NodeCheck()
+    void NodeCheck(Vector3 directionToMove)
     {
-        AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
+        if (AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position)) != null)
+        {
+            RotateTowardsDirection(directionToMove);
+            MoveOneSquare(directionToMove);
+        }
     }
 
     // Update is called once per frame
@@ -62,7 +66,7 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow) && time < Time.time && playerCanMove)
         {
             //Up
-            NodeCheck();
+            NodeCheck(Vector3.forward);
 
             //Ray(Vector3.forward);
         }
@@ -149,17 +153,16 @@ public class PlayerCharacter : MonoBehaviour
         animComp.SetFloat(animSpeedString, animState);
     }
 
-    void Rotate(Vector3 facing)
+    void RotateTowardsDirection(Vector3 directionToMove)
     {
         //The player faces the direction they move in.
-        transform.forward = facing;
+        transform.forward = directionToMove;
     }
 
-    void Move(Vector3 moving)
+    void MoveOneSquare(Vector3 directionToMove)
     {
-        //TODO change so input is ignored when moving without using time
         //The player moves one co-ordinate at a time.
-        playerCurrentPosition += moving;
+        playerCurrentPosition += directionToMove;
         playerIsWalking = true;
         animState = 1;
         animComp.SetFloat(animSpeedString, animState);
