@@ -26,28 +26,28 @@ public class CubeChange : MonoBehaviour {
             for (int i = rightCubeList.Length-1; i > -1; i--)
             {
                 //Debug.Log(rightCubeList[i]);
-                Instantiate(newCubeList[4], rightCubeList[i].transform.position, Quaternion.identity);
+                Instantiate(newCubeList[5], rightCubeList[i].transform.position, Quaternion.identity);
                 DestroyImmediate(rightCubeList[i]);
             }
 
             for (int i = leftCubeList.Length-1; i > -1; i--)
             {
                 //Debug.Log(leftCubeList[i]);
-                Instantiate(newCubeList[3], leftCubeList[i].transform.position, Quaternion.identity);
+                Instantiate(newCubeList[4], leftCubeList[i].transform.position, Quaternion.identity);
                 DestroyImmediate(leftCubeList[i]);
             }
 
             for (int i = downCubeList.Length-1; i > -1; i--)
             {
                 //Debug.Log(downCubeList[i]);
-                Instantiate(newCubeList[2], downCubeList[i].transform.position, Quaternion.identity);
+                Instantiate(newCubeList[3], downCubeList[i].transform.position, Quaternion.identity);
                 DestroyImmediate(downCubeList[i]);
             }
 
             for (int i = upCubeList.Length-1; i > -1; i--)
             {
                 //Debug.Log(upCubeList[i]);
-                Instantiate(newCubeList[5], upCubeList[i].transform.position, Quaternion.identity);
+                Instantiate(newCubeList[2], upCubeList[i].transform.position, Quaternion.identity);
                 DestroyImmediate(upCubeList[i]);
             }
 

@@ -57,6 +57,10 @@ public class PlayerCharacter : MonoBehaviour
             RotateTowardsDirection(directionToMove);
             MoveOneSquare(directionToMove);
         }
+        else
+        {
+          RotateTowardsDirection(directionToMove);
+        }
     }
 
     // Update is called once per frame

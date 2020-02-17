@@ -19,13 +19,10 @@ public class Node : MonoBehaviour
     private const string downTag = "down";
     private const string leftTag = "left";
     private const string rightTag = "right";
-    private const string eventSystemTag = "EventSystem";
 
     // Start is called before the first frame update
     private void Start()
     {
-        eventSystem = GameObject.FindGameObjectWithTag(eventSystemTag);
-
         if (AllNodes.DoesDictionaryContainKey(this.transform.position))
         {
             Debug.Log("WARNING! Multiple nodes exist at space: " + this.transform.position);
@@ -38,7 +35,6 @@ public class Node : MonoBehaviour
         switch (this.gameObject.tag)
         {
             case endTag:
-                // TODO Win the game
                 break;
             case startTag:
             case floorTag:
