@@ -24,6 +24,13 @@ public class Node : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        // TODO Will need to get game component with TreeAlgorithm attached to access method to add node to dictionary
+        if (allNodes.ContainsKey(this.transform.position))
+        {
+          Debug.Log("WARNING! Multiple nodes exist at space: " + this.transform.position);
+        }
+
+        allNodes.Add(this.transform.position, this.gameObject);
         environmentGameObject = this.transform.parent.gameObject;
 
         // Need to determine what type of node this is as to where the player could go from it
@@ -135,5 +142,21 @@ public class Node : MonoBehaviour
     public void AddNodeSentHere(GameObject node)
     {
         nodesSentHereList.Add(node);
+    }
+
+    public GameObject GetNodeUp() {
+        return nodeUp;
+    }
+
+    public GameObject GetNodeDown() {
+        return nodeDown;
+    }
+
+    public GameObject GetNodeLeft() {
+        return nodeLeft;
+    }
+
+    public GameObject GetNodeRight() {
+        return nodeRight;
     }
 }

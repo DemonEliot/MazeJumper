@@ -8,8 +8,8 @@ public class TreeAlgorithm : MonoBehaviour {
 
     private GameObject[] startList;
     private GameObject startNode;
-    private List<GameObject> nodeList;
-    private int keyIndex = 0;
+
+    private static Dictionary<Vector3, GameObject> allNodes = new Dictionary<Vector3, GameObject>();
 
 	// Use this for initialization
 	void Start ()
@@ -27,16 +27,14 @@ public class TreeAlgorithm : MonoBehaviour {
         }
 
         startNode = startList[0];
-
-        AddNodeToList(startNode);
 	}
 
-    void AddNodeToList(GameObject node)
-    {
-        node.GetComponent<Node>().GiveKeyToNode(keyIndex);
-        keyIndex++;
-        nodeList.Add(node);
-    }
+  public GameObject GetNodeByPosition(Vector3 position) {
+      return allNodes[position];
+  }
 
-    // Need to recusively (starting from startCube) go through each cube
+  public void AddNodeToDictionary(GameObject newNode) {
+      allNodes.Add(newNode.transform.position, newNode);
+  }
+
 }

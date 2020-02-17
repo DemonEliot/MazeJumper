@@ -36,6 +36,11 @@ public class PlayerCharacter : MonoBehaviour {
         mainCamera = GameObject.FindWithTag("MainCamera");
     }
 
+    void NodeCheck()
+    {
+        if ()
+    }
+
 	// Update is called once per frame
 	void Update ()
     {
@@ -43,7 +48,9 @@ public class PlayerCharacter : MonoBehaviour {
         if (Input.GetKey (KeyCode.UpArrow) && time < Time.time && playerCanMove)
         {
             //Up
-            Ray(Vector3.forward);
+            NodeCheck();
+
+            //Ray(Vector3.forward);
         }
 
         else if (Input.GetKey(KeyCode.RightArrow) && time < Time.time && playerCanMove)
@@ -51,7 +58,7 @@ public class PlayerCharacter : MonoBehaviour {
             //Right
             Ray(Vector3.right);
         }
-        
+
         else if (Input.GetKey(KeyCode.DownArrow) && time < Time.time && playerCanMove)
         {
             //Down
@@ -149,7 +156,7 @@ public class PlayerCharacter : MonoBehaviour {
     //TODO change so this no longer uses rays/collision, but tree algorithm to move.
     void Ray(Vector3 rayCheck)
     {
-        
+
         if (playerIsIntangible == false)
         {
             Ray emptyCheck = new Ray(transform.position, rayCheck);
