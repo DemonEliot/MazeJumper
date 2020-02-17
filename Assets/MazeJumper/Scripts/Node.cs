@@ -8,30 +8,31 @@ public class Node : MonoBehaviour
     private int nodeKey;
     private GameObject nodeUp, nodeDown, nodeLeft, nodeRight;
     private List<GameObject> nodesSentHereList;
-    private GameObject environmentGameObject;
+    private GameObject environment;
+    private GameObject eventSystem;
 
-    private readonly string startTag = "start";
-    // TODO Add 'end' tag in Unity
-    // TODO Reformat line indentations
-    private readonly string endTag = "end";
-    private readonly string floorTag = "floor";
-    private readonly string gateTag = "gate";
-    private readonly string upTag = "up";
-    private readonly string downTag = "down";
-    private readonly string leftTag = "left";
-    private readonly string rightTag = "right";
+    private const string startTag = "start";
+    private const string endTag = "end";
+    private const string floorTag = "floor";
+    private const string gateTag = "gate";
+    private const string upTag = "up";
+    private const string downTag = "down";
+    private const string leftTag = "left";
+    private const string rightTag = "right";
+    private const string eventSystemTag = "EventSystem";
 
     // Start is called before the first frame update
     private void Start()
     {
-        // TODO Will need to get game component with TreeAlgorithm attached to access method to add node to dictionary
-        if (allNodes.ContainsKey(this.transform.position))
+        eventSystem = GameObject.FindGameObjectWithTag(eventSystemTag);
+
+        if (AllNodes.DoesDictionaryContainKey(this.transform.position))
         {
-          Debug.Log("WARNING! Multiple nodes exist at space: " + this.transform.position);
+            Debug.Log("WARNING! Multiple nodes exist at space: " + this.transform.position);
         }
 
-        allNodes.Add(this.transform.position, this.gameObject);
-        environmentGameObject = this.transform.parent.gameObject;
+        AllNodes.AddNodeToDictionary(this.gameObject);
+        environment = this.transform.parent.gameObject;
 
         // Need to determine what type of node this is as to where the player could go from it
         switch (this.gameObject.tag)
@@ -45,7 +46,7 @@ public class Node : MonoBehaviour
                 // Can potentially walk in any direction, need to loop through all cubes and check if their positions are next to this node
 
                 // This loop checks the 'environment' gameobject children
-                foreach (Transform child in environmentGameObject.transform)
+                foreach (Transform child in environment.transform)
                 {
                     if (child.position == this.transform.position + Vector3.forward)
                     {
@@ -79,54 +80,54 @@ public class Node : MonoBehaviour
             case rightTag:
                 getNextNodeFromPortalMovement();
                 break;
-            case default:
-                Debug.Log("This gameobject has an unexpected tag of: " + this.gameObject.tag );
+            default:
+                Debug.Log("This gameobject has an unexpected tag of: " + this.gameObject.tag);
                 break;
         }
     }
 
     private void getNextNodeFromPortalMovement()
     {
-      Vector3 positionToCheck = this.transform.position;
-      Vector3 directionToMove;
-      List<GameObject> savedNodeToChild;
+        Vector3 positionToCheck = this.transform.position;
+        Vector3 directionToMove = new Vector3();
+        List<GameObject> savedNodeToChild = new List<GameObject>();
 
-      switch (this.gameObject.tag)
-      {
-        case upTag:
-            directionToMove = Vector3.forward;
-            savedNodeToChild.Add(nodeUp);
-            break;
-        case downTag:
-            directionToMove = Vector3.back;
-            savedNodeToChild.Add(nodeDown);
-            break;
-        case leftTag:
-            directionToMove = Vector3.left;
-            savedNodeToChild.Add(nodeLeft);
-            break;
-        case rightTag:
-            directionToMove = Vector3.right;
-            savedNodeToChild.Add(nodeRight);
-            break;
-      }
+        switch (this.gameObject.tag)
+        {
+            case upTag:
+                directionToMove = Vector3.forward;
+                savedNodeToChild.Add(nodeUp);
+                break;
+            case downTag:
+                directionToMove = Vector3.back;
+                savedNodeToChild.Add(nodeDown);
+                break;
+            case leftTag:
+                directionToMove = Vector3.left;
+                savedNodeToChild.Add(nodeLeft);
+                break;
+            case rightTag:
+                directionToMove = Vector3.right;
+                savedNodeToChild.Add(nodeRight);
+                break;
+        }
 
-      do
-      {
-          positionToCheck += directionToMove;
-          foreach (Transform child in environmentGameObject.transform)
-          {
-            if (child.gameObject.tag != startTag || child.gameObject.tag != floorTag || child.gameObject.tag != endTag)
+        do
+        {
+            positionToCheck += directionToMove;
+            foreach (Transform child in environment.transform)
             {
-              if (child.position == positionToCheck)
-              {
-                  // TODO Check if this actually works in C# ... Do I even need to use a list? Can I have a temp variable that points to the acutal Node variable?
-                  savedNodeToChild.get(0) = child.gameObject;
-                  child.gameObject.GetComponent<Node>().AddNodeSentHere(this.gameObject);
-              }
+                if (child.gameObject.tag != startTag || child.gameObject.tag != floorTag || child.gameObject.tag != endTag)
+                {
+                    if (child.position == positionToCheck)
+                    {
+                        // TODO Check if this actually works in C# ... Do I even need to use a list? Can I have a temp variable that points to the acutal Node variable?
+                        savedNodeToChild[0] = child.gameObject;
+                        child.gameObject.GetComponent<Node>().AddNodeSentHere(this.gameObject);
+                    }
+                }
             }
-          }
-      } while (savedNodeToChild.get(0) == null);
+        } while (savedNodeToChild[0] == null);
     }
 
     public void GiveKeyToNode(int key)
@@ -144,19 +145,23 @@ public class Node : MonoBehaviour
         nodesSentHereList.Add(node);
     }
 
-    public GameObject GetNodeUp() {
+    public GameObject GetNodeUp()
+    {
         return nodeUp;
     }
 
-    public GameObject GetNodeDown() {
+    public GameObject GetNodeDown()
+    {
         return nodeDown;
     }
 
-    public GameObject GetNodeLeft() {
+    public GameObject GetNodeLeft()
+    {
         return nodeLeft;
     }
 
-    public GameObject GetNodeRight() {
+    public GameObject GetNodeRight()
+    {
         return nodeRight;
     }
 }

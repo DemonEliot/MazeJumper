@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerCharacter : MonoBehaviour {
+public class PlayerCharacter : MonoBehaviour
+{
 
-    // Variables for Animation
+    // Animation
     private Animator animComp;
     private float animState;
+    private const string animSpeedString = "Speed";
 
-    // Variables for Character transformation/rotation
+    // Character transformation/rotation
     private Vector3 playerStartPosition;
     private Vector3 playerCurrentPosition;
     private Quaternion playerStartRotation;
@@ -16,36 +18,48 @@ public class PlayerCharacter : MonoBehaviour {
     private bool playerIsIntangible = false;
     private bool playerCanMove = true;
 
-    // Variables for particle use
+    // Particle use
     private SkinnedMeshRenderer[] listOfMeshRender;
     private ParticleSystem playerParticle;
     private ParticleSystem.EmissionModule playerEmmissionModule;
 
-    private GameObject mainCamera;
     private float time = 0;
 
+    // Event System
+    private GameObject eventSystem;
+    private const string eventSystemTag = "EventSystem";
+
+    // Main Camera
+    private GameObject mainCamera;
+    private const string mainCameraTag = "MainCamera";
+
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         animComp = this.GetComponent<Animator>();
+
         playerStartPosition = transform.position;
         playerCurrentPosition = transform.position;
         playerStartRotation = transform.rotation;
+
         listOfMeshRender = GetComponentsInChildren<SkinnedMeshRenderer>();
         playerParticle = GetComponentInChildren<ParticleSystem>();
         playerEmmissionModule = playerParticle.emission;
-        mainCamera = GameObject.FindWithTag("MainCamera");
+
+        mainCamera = GameObject.FindWithTag(mainCameraTag);
+        eventSystem = GameObject.FindWithTag(eventSystemTag);
     }
 
     void NodeCheck()
     {
-        if ()
+        AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
     }
 
-	// Update is called once per frame
-	void Update ()
+    // Update is called once per frame
+    void Update()
     {
         //Before any movement, a ray is used to detect if the player can move there.
-        if (Input.GetKey (KeyCode.UpArrow) && time < Time.time && playerCanMove)
+        if (Input.GetKey(KeyCode.UpArrow) && time < Time.time && playerCanMove)
         {
             //Up
             NodeCheck();
@@ -56,19 +70,19 @@ public class PlayerCharacter : MonoBehaviour {
         else if (Input.GetKey(KeyCode.RightArrow) && time < Time.time && playerCanMove)
         {
             //Right
-            Ray(Vector3.right);
+            //Ray(Vector3.right);
         }
 
         else if (Input.GetKey(KeyCode.DownArrow) && time < Time.time && playerCanMove)
         {
             //Down
-            Ray(Vector3.back);
+            //Ray(Vector3.back);
         }
 
         else if (Input.GetKey(KeyCode.LeftArrow) && time < Time.time && playerCanMove)
         {
             //Left
-            Ray(Vector3.left);
+            //Ray(Vector3.left);
         }
 
         //If the player is walking and they've finished moving, then make them stop walking.
@@ -76,7 +90,7 @@ public class PlayerCharacter : MonoBehaviour {
         {
             playerIsWalking = false;
             animState = 0;
-            animComp.SetFloat("Speed", animState);
+            animComp.SetFloat(animSpeedString, animState);
         }
 
         // If the player is not teleporting through portals...
@@ -112,16 +126,16 @@ public class PlayerCharacter : MonoBehaviour {
         switch (direction)
         {
             case ("Up"):
-                Ray(Vector3.forward);
+                //Ray(Vector3.forward);
                 break;
             case ("Down"):
-                Ray(Vector3.back);
+                //Ray(Vector3.back);
                 break;
             case ("Right"):
-                Ray(Vector3.right);
+                //Ray(Vector3.right);
                 break;
             case ("Left"):
-                Ray(Vector3.left);
+                //Ray(Vector3.left);
                 break;
             default:
                 break;
@@ -132,7 +146,7 @@ public class PlayerCharacter : MonoBehaviour {
     {
         playerIsWalking = false;
         animState = 0;
-        animComp.SetFloat("Speed", animState);
+        animComp.SetFloat(animSpeedString, animState);
     }
 
     void Rotate(Vector3 facing)
@@ -148,32 +162,8 @@ public class PlayerCharacter : MonoBehaviour {
         playerCurrentPosition += moving;
         playerIsWalking = true;
         animState = 1;
-        animComp.SetFloat("Speed", animState);
+        animComp.SetFloat(animSpeedString, animState);
         time = Time.time + 0.3f;
-    }
-
-
-    //TODO change so this no longer uses rays/collision, but tree algorithm to move.
-    void Ray(Vector3 rayCheck)
-    {
-
-        if (playerIsIntangible == false)
-        {
-            Ray emptyCheck = new Ray(transform.position, rayCheck);
-
-            Debug.DrawRay(transform.position, rayCheck * 1f, Color.red);
-            //For everything that the raycast hits, starting from the player and going 1 square...
-            foreach (RaycastHit hit in Physics.RaycastAll(emptyCheck, 1f))
-            {
-                //if it hits something, not including the player or floor they're standing on...
-                //TODO change so uses layer mask instead
-                if (hit.transform != transform && hit.transform.position != transform.position)
-                {
-                    Rotate(rayCheck);
-                    Move(rayCheck);
-                }
-            }
-        }
     }
 
     public void ResetCharacter(GameObject environment)
