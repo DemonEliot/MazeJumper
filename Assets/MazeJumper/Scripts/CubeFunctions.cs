@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Should just be able to delete this class... Almost... 
 public class CubeFunctions : MonoBehaviour {
 
     private Vector3 directionToFace;
@@ -60,7 +61,7 @@ public class CubeFunctions : MonoBehaviour {
 
             //TODO make a less messy end of level
         }
-    
+
     }
 
     void PortalMovement(Vector3 directionToFace, Collider portal)
@@ -77,7 +78,7 @@ public class CubeFunctions : MonoBehaviour {
         //If the player is still intangible after moving one square, then they need to move again.
         if (GetComponent<PlayerCharacter>().GetPlayerIsIntangible() == true)
         {
-            if (transform.position.x > targetPosition.x-0.1 && transform.position.x < targetPosition.x + 0.1 && 
+            if (transform.position.x > targetPosition.x-0.1 && transform.position.x < targetPosition.x + 0.1 &&
                 transform.position.z > targetPosition.z - 0.1 && transform.position.z < targetPosition.z + 0.1)
             {
                 transform.position = targetPosition;

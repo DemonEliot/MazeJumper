@@ -11,15 +11,6 @@ public class Node : MonoBehaviour
     private GameObject environment;
     private GameObject eventSystem;
 
-    private const string startTag = "start";
-    private const string endTag = "end";
-    private const string floorTag = "floor";
-    private const string gateTag = "gate";
-    private const string upTag = "up";
-    private const string downTag = "down";
-    private const string leftTag = "left";
-    private const string rightTag = "right";
-
     // Start is called before the first frame update
     private void Start()
     {
@@ -34,11 +25,11 @@ public class Node : MonoBehaviour
         // Need to determine what type of node this is as to where the player could go from it
         switch (this.gameObject.tag)
         {
-            case endTag:
+            case allNodes.END:
                 break;
-            case startTag:
-            case floorTag:
-            case gateTag:
+            case allNodes.START:
+            case allNodes.FLOOR:
+            case allNodes.GATE:
                 // Can potentially walk in any direction, need to loop through all cubes and check if their positions are next to this node
 
                 // This loop checks the 'environment' gameobject children
@@ -70,10 +61,10 @@ public class Node : MonoBehaviour
                 }
                 break;
 
-            case upTag:
-            case downTag:
-            case leftTag:
-            case rightTag:
+            case allNodes.UP:
+            case allNodes.DOWN:
+            case allNodes.LEFT:
+            case allNodes.RIGHT:
                 GetNextNodeFromPortalMovement();
                 break;
             default:
@@ -86,23 +77,24 @@ public class Node : MonoBehaviour
     {
         Vector3 positionToCheck = this.transform.position;
         Vector3 directionToMove = new Vector3();
+        // Rename to savedChildToNode
         List<GameObject> savedNodeToChild = new List<GameObject>();
 
         switch (this.gameObject.tag)
         {
-            case upTag:
+            case allNodes.UP:
                 directionToMove = Vector3.forward;
                 savedNodeToChild.Add(nodeUp);
                 break;
-            case downTag:
+            case allNodes.DOWN:
                 directionToMove = Vector3.back;
                 savedNodeToChild.Add(nodeDown);
                 break;
-            case leftTag:
+            case allNodes.LEFT:
                 directionToMove = Vector3.left;
                 savedNodeToChild.Add(nodeLeft);
                 break;
-            case rightTag:
+            case allNodes.RIGHT:
                 directionToMove = Vector3.right;
                 savedNodeToChild.Add(nodeRight);
                 break;
@@ -113,11 +105,10 @@ public class Node : MonoBehaviour
             positionToCheck += directionToMove;
             foreach (Transform child in environment.transform)
             {
-                if (child.gameObject.tag != startTag || child.gameObject.tag != floorTag || child.gameObject.tag != endTag)
+                if (child.gameObject.tag != allNodes.START || child.gameObject.tag != allNodes.FLOOR || child.gameObject.tag != allNodes.END)
                 {
                     if (child.position == positionToCheck)
                     {
-                        // TODO Check if this actually works in C# ... Do I even need to use a list? Can I have a temp variable that points to the acutal Node variable?
                         savedNodeToChild[0] = child.gameObject;
                         child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                     }

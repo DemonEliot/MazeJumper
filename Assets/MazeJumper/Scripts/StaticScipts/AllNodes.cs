@@ -7,6 +7,15 @@ public static class AllNodes
 
     private static Dictionary<Vector2, GameObject> allNodes = new Dictionary<Vector2, GameObject>();
 
+    public static const string START = "start";
+    public static const string END = "end";
+    public static const string FLOOR = "floor";
+    public static const string GATE = "gate";
+    public static const string UP = "up";
+    public static const string DOWN = "down";
+    public static const string LEFT = "left";
+    public static const string RIGHT = "right";
+
     public static bool DoesDictionaryContainKey(Vector2 key)
     {
         return allNodes.ContainsKey(key);
