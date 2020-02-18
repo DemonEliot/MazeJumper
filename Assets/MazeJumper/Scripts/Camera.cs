@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraMove : MonoBehaviour {
+public class Camera : MonoBehaviour {
 
     private GameObject player;
     private Vector3 offsetFromPlayer;
@@ -42,7 +42,7 @@ public class CameraMove : MonoBehaviour {
                 return;
             }
 
-            Vector3 position = Camera.main.ScreenToViewportPoint(Input.mousePosition - clickOrigin);
+            Vector3 position = UnityEngine.Camera.main.ScreenToViewportPoint(Input.mousePosition - clickOrigin);
             Vector3 translationMovement = new Vector3(position.x * cameraSpeed * -1f, 0, position.y * cameraSpeed * -1f);
             transform.Translate(translationMovement, Space.World);
         }
@@ -77,13 +77,13 @@ public class CameraMove : MonoBehaviour {
         // If Camera Mode is currently on, make player able to move and camera cannot move.
         if (canCameraMove)
         {
-            player.GetComponent<PlayerCharacter>().SetPlayerMove(true);
+            player.GetComponent<CharacterController>().SetPlayerCanMove(true);
             canCameraMove = false;
         }
         // If Camera Mode is currently off, make player stops being able to move and camera can move instead.
         else if (!canCameraMove)
         {
-            player.GetComponent<PlayerCharacter>().SetPlayerMove(false);
+            player.GetComponent<CharacterController>().SetPlayerCanMove(false);
             canCameraMove = true;
         }
     }

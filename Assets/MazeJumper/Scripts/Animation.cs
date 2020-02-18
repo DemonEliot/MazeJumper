@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimation : MonoBehaviour
+public class Animation : MonoBehaviour
 {
 
   // Animation
-  private Animator animComp;
-  private float animState;
+  private Animator animator;
+  private float animationState;
 
     // Start is called before the first frame update
     void Start()
     {
-        animComp = this.GetComponent<Animator>();
+        animator = this.GetComponent<Animator>();
     }
 
     public void SetAnimationState(int newState)
     {
-      animState = newState;
-      animComp.SetFloat(Tags.SPEED, animState);
+      animationState = newState;
+      animator.SetFloat(Tags.SPEED, animationState);
     }
 }

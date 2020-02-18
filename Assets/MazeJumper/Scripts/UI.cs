@@ -120,17 +120,17 @@ public class UI : MonoBehaviour {
 
     public void CameraMode()
     {
-        cameraMain.GetComponent<CameraMove>().SwitchCameraMode();
+        cameraMain.GetComponent<Camera>().SwitchCameraMode();
     }
 
     public void MovementDirection(string direction)
     {
-        player.GetComponent<PlayerCharacter>().Movement(direction);
+        player.GetComponent<CharacterController>().MobileInput(direction);
     }
 
     public void Reset()
     {
-        player.GetComponent<PlayerCharacter>().ResetCharacter(environment);
+        player.GetComponent<CharacterController>().ResetCharacter(environment);
     }
 
     void Update()
