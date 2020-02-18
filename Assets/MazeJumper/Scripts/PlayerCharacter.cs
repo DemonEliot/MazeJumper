@@ -25,10 +25,6 @@ public class PlayerCharacter : MonoBehaviour
 
     private float time = 0;
 
-    // Event System
-    private GameObject eventSystem;
-    private const string eventSystemTag = "EventSystem";
-
     // Main Camera
     private GameObject mainCamera;
     private const string mainCameraTag = "MainCamera";
@@ -47,7 +43,6 @@ public class PlayerCharacter : MonoBehaviour
         playerEmmissionModule = playerParticle.emission;
 
         mainCamera = GameObject.FindWithTag(mainCameraTag);
-        eventSystem = GameObject.FindWithTag(eventSystemTag);
     }
 
     void NodeCheck(Vector3 directionToMove)
@@ -71,26 +66,24 @@ public class PlayerCharacter : MonoBehaviour
         {
             //Up
             NodeCheck(Vector3.forward);
-
-            //Ray(Vector3.forward);
         }
 
         else if (Input.GetKey(KeyCode.RightArrow) && time < Time.time && playerCanMove)
         {
             //Right
-            //Ray(Vector3.right);
+            NodeCheck(Vector3.right);
         }
 
         else if (Input.GetKey(KeyCode.DownArrow) && time < Time.time && playerCanMove)
         {
             //Down
-            //Ray(Vector3.back);
+            NodeCheck(Vector3.back);
         }
 
         else if (Input.GetKey(KeyCode.LeftArrow) && time < Time.time && playerCanMove)
         {
             //Left
-            //Ray(Vector3.left);
+            NodeCheck(Vector3.left);
         }
 
         //If the player is walking and they've finished moving, then make them stop walking.
