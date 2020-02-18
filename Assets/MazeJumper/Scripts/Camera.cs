@@ -8,6 +8,7 @@ public class Camera : MonoBehaviour {
     private Vector3 clickOrigin;
     private bool canCameraMove = false;
     private readonly float cameraSpeed = 0.5f;
+    private Movement movementScript;
 
     // Use this for initialization
     private void Start()
@@ -17,6 +18,7 @@ public class Camera : MonoBehaviour {
         transform.position = player.transform.position + Vector3.up * 10 + Vector3.back * 3;
         offsetFromPlayer = transform.position - player.transform.position;
         transform.rotation = Quaternion.Euler(60, 0, 0);
+        movementScript = player.GetComponent<Movement>();
     }
 
     // Update is called once per frame
@@ -77,13 +79,13 @@ public class Camera : MonoBehaviour {
         // If Camera Mode is currently on, make player able to move and camera cannot move.
         if (canCameraMove)
         {
-            player.GetComponent<CharacterController>().SetPlayerCanMove(true);
+            movementScript.SetPlayerCanMove(true);
             canCameraMove = false;
         }
         // If Camera Mode is currently off, make player stops being able to move and camera can move instead.
         else if (!canCameraMove)
         {
-            player.GetComponent<CharacterController>().SetPlayerCanMove(false);
+            movementScript.SetPlayerCanMove(false);
             canCameraMove = true;
         }
     }
