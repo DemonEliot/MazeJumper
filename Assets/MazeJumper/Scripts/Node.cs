@@ -25,11 +25,11 @@ public class Node : MonoBehaviour
         // Need to determine what type of node this is as to where the player could go from it
         switch (this.gameObject.tag)
         {
-            case allNodes.END:
+            case Tags.END:
                 break;
-            case allNodes.START:
-            case allNodes.FLOOR:
-            case allNodes.GATE:
+            case Tags.START:
+            case Tags.FLOOR:
+            case Tags.GATE:
                 // Can potentially walk in any direction, need to loop through all cubes and check if their positions are next to this node
 
                 // This loop checks the 'environment' gameobject children
@@ -61,10 +61,10 @@ public class Node : MonoBehaviour
                 }
                 break;
 
-            case allNodes.UP:
-            case allNodes.DOWN:
-            case allNodes.LEFT:
-            case allNodes.RIGHT:
+            case Tags.UP:
+            case Tags.DOWN:
+            case Tags.LEFT:
+            case Tags.RIGHT:
                 GetNextNodeFromPortalMovement();
                 break;
             default:
@@ -82,19 +82,19 @@ public class Node : MonoBehaviour
 
         switch (this.gameObject.tag)
         {
-            case allNodes.UP:
+            case Tags.UP:
                 directionToMove = Vector3.forward;
                 savedNodeToChild.Add(nodeUp);
                 break;
-            case allNodes.DOWN:
+            case Tags.DOWN:
                 directionToMove = Vector3.back;
                 savedNodeToChild.Add(nodeDown);
                 break;
-            case allNodes.LEFT:
+            case Tags.LEFT:
                 directionToMove = Vector3.left;
                 savedNodeToChild.Add(nodeLeft);
                 break;
-            case allNodes.RIGHT:
+            case Tags.RIGHT:
                 directionToMove = Vector3.right;
                 savedNodeToChild.Add(nodeRight);
                 break;
@@ -105,7 +105,7 @@ public class Node : MonoBehaviour
             positionToCheck += directionToMove;
             foreach (Transform child in environment.transform)
             {
-                if (child.gameObject.tag != allNodes.START || child.gameObject.tag != allNodes.FLOOR || child.gameObject.tag != allNodes.END)
+                if (child.gameObject.tag != Tags.START || child.gameObject.tag != Tags.FLOOR || child.gameObject.tag != Tags.END)
                 {
                     if (child.position == positionToCheck)
                     {

@@ -24,7 +24,6 @@ public class PlayerCharacter : MonoBehaviour
 
     // Main Camera
     private GameObject mainCamera;
-    private const string mainCameraTag = "MainCamera";
     private CameraMove cameraMoveScript;
 
     private PlayerAnimation animation;
@@ -42,7 +41,7 @@ public class PlayerCharacter : MonoBehaviour
         playerParticle = GetComponentInChildren<ParticleSystem>();
         playerEmmissionModule = playerParticle.emission;
 
-        mainCamera = GameObject.FindWithTag(mainCameraTag);
+        mainCamera = GameObject.FindWithTag(Tags.MAINCAMERA);
         cameraMoveScript = mainCamera.GetComponent<CameraMove>();
 
         animation = this.gameObject.GetComponent<PlayerAnimation>()
@@ -85,30 +84,30 @@ public class PlayerCharacter : MonoBehaviour
           // As a person
           switch(currentNode.tag)
           {
-            case allNodes.END:
+            case Tags.END:
               // TODO End level if player is not a particle
               break;
-            case allNodes.UP:
+            case Tags.UP:
               ChangeTargetPosition(Vector3Extension.AsVector2(currentNode.GetNodeUp().transform.position), Vector3.forward);
               ChangePlayerToParticle();
               break;
-            case allNodes.DOWN:
+            case Tags.DOWN:
                 ChangeTargetPosition(Vector3Extension.AsVector2(currentNode.GetNodeDown().transform.position), Vector3.back);
                 ChangePlayerToParticle();
                 break;
-            case allNodes.LEFT:
+            case Tags.LEFT:
                 ChangeTargetPosition(Vector3Extension.AsVector2(currentNode.GetNodeLeft().transform.position), Vector3.left);
                 ChangePlayerToParticle();
                 break;
-            case allNodes.RIGHT:
+            case Tags.RIGHT:
                 ChangeTargetPosition(Vector3Extension.AsVector2(currentNode.GetNodeRight().transform.position), Vector3.right);
                 ChangePlayerToParticle();
                 break;
 
             // Should anything change if the player is standing on a floor node while flesh?
-            case allNodes.GATE:
-            case allNodes.START:
-            case allNodes.FLOOR:
+            case Tags.GATE:
+            case Tags.START:
+            case Tags.FLOOR:
               break;
             default:
               Debug.Log("WARNING! Standing on a node with an unexpected tag");
@@ -119,25 +118,25 @@ public class PlayerCharacter : MonoBehaviour
           // As a particle
           switch(currentNode.tag)
           {
-            case allNodes.UP:
+            case Tags.UP:
               ChangeTargetPosition(Vector3Extension.AsVector2(currentNode.GetNodeUp().transform.position), Vector3.forward);
               break;
-            case allNodes.DOWN:
+            case Tags.DOWN:
               ChangeTargetPosition(Vector3Extension.AsVector2(currentNode.GetNodeDown().transform.position), Vector3.back);
               break;
-            case allNodes.LEFT:
+            case Tags.LEFT:
               ChangeTargetPosition(Vector3Extension.AsVector2(currentNode.GetNodeLeft().transform.position), Vector3.left);
               break;
-            case allNodes.RIGHT:
+            case Tags.RIGHT:
               ChangeTargetPosition(Vector3Extension.AsVector2(currentNode.GetNodeRight().transform.position), Vector3.right);
               break;
-            case allNodes.GATE:
+            case Tags.GATE:
               ChangePlayerToFlesh();
 
             // Should anything change if the player is standing on a floor node as a particle?
-            case allNodes.START:
-            case allNodes.FLOOR:
-            case allNodes.END:
+            case Tags.START:
+            case Tags.FLOOR:
+            case Tags.END:
               break;
             default:
               Debug.Log("WARNING! Standing on a node with an unexpected tag");
@@ -219,7 +218,7 @@ public class PlayerCharacter : MonoBehaviour
     void NodeCheck(Vector3 directionToMove)
     {
         Vector2 newPosition = Vector3Extension.AsVector2(this.transform.position + directionToMove);
-        if (AllNodes.GetNodeByPosition(newPosition) != null)
+        if (Tags.GetNodeByPosition(newPosition) != null)
         {
             ChangeTargetPosition(newPosition, directionToMove);
         }

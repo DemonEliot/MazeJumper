@@ -8,7 +8,6 @@ public class PlayerAnimation : MonoBehaviour
   // Animation
   private Animator animComp;
   private float animState;
-  private const string animSpeedString = "Speed";
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +18,6 @@ public class PlayerAnimation : MonoBehaviour
     public void SetAnimationState(int newState)
     {
       animState = newState;
-      animComp.SetFloat(animSpeedString, animState);
+      animComp.SetFloat(Tags.SPEED, animState);
     }
 }
