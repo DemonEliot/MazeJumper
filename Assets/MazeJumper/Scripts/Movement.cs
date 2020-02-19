@@ -21,6 +21,16 @@ public class Movement : MonoBehaviour
         characterController = this.gameObject.GetComponent<CharacterController>();
     }
 
+    // speed = distance / time
+    // Vector3 direction = target.position - transform.position;
+    // float distance = direction.magnitude;
+    // float time = 1.0f;//seconds
+
+    // void Update()
+    // {
+        // transform.Translate(direction * (Time.deltaTime*(distance/time)));
+    // }
+
     // Update is called once per frame
     void Update()
     {
@@ -39,7 +49,7 @@ public class Movement : MonoBehaviour
                 characterController.SetAnimationState(walkingState);
                 Vector3 targetPosition3D = new Vector3(targetPosition.x, transform.position.y, targetPosition.y);
                 float step = speed * Time.deltaTime;
-                transform.position = transform.forward * step;
+                //transform.position = transform.forward * step;
                 //transform.position = Vector3.Lerp(transform.position, targetPosition3D, step);
                 //transform.position = Vector3.MoveTowards(transform.position, targetPosition3D, step);
             }
