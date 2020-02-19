@@ -14,7 +14,7 @@ public class Node : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        if (AllNodes.DoesDictionaryContainKey(this.transform.position))
+        if (AllNodes.DoesDictionaryContainKey(Vector3Extension.AsVector2(this.transform.position)))
         {
             Debug.Log("WARNING! Multiple nodes exist at space: " + this.transform.position);
         }

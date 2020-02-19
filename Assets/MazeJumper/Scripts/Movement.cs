@@ -8,7 +8,7 @@ public class Movement : MonoBehaviour
     private Vector2 targetPosition;
     private bool isMoving = false;
     private bool canPlayerMove = true;
-    private float speed = 2;
+    private float speed = 2f;
 
     CharacterController characterController;
     public const int idleState = 0;
@@ -39,7 +39,9 @@ public class Movement : MonoBehaviour
                 characterController.SetAnimationState(walkingState);
                 Vector3 targetPosition3D = new Vector3(targetPosition.x, transform.position.y, targetPosition.y);
                 float step = speed * Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition3D, step);
+                transform.position = transform.forward * step;
+                //transform.position = Vector3.Lerp(transform.position, targetPosition3D, step);
+                //transform.position = Vector3.MoveTowards(transform.position, targetPosition3D, step);
             }
         }
     }
