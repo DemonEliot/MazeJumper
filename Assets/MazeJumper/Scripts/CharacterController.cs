@@ -10,6 +10,7 @@ public class CharacterController : MonoBehaviour
 
     // Particle
     private ParticleController particleControllerScript;
+    private const int particleSpeed = 4;
 
     // Main Camera
     private GameObject cameraObject;
@@ -20,6 +21,7 @@ public class CharacterController : MonoBehaviour
 
     // Movement
     Movement movementScript;
+    private const int characterSpeed = 2;
 
     // Use this for initialization
     void Start()
@@ -120,13 +122,14 @@ public class CharacterController : MonoBehaviour
 
     void ChangeToFlesh()
     {
-        movementScript.SetSpeed(2);
+        movementScript.SetSpeed(characterSpeed);
         particleControllerScript.EnableRender(true);
+
     }
 
     void ChangeToParticle()
     {
-        movementScript.SetSpeed(4);
+        movementScript.SetSpeed(particleSpeed);
         particleControllerScript.EnableRender(false);
     }
 
@@ -215,9 +218,6 @@ public class CharacterController : MonoBehaviour
     // Only want to change animation state when the character is actually there
     public void SetAnimationState(int state)
     {
-        if (!particleControllerScript.GetIsIntangible())
-        {
             animate.SetAnimationState(state);
-        }
     }
 }

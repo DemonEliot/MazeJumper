@@ -29,8 +29,8 @@ public class Movement : MonoBehaviour
         if (distance < 0.1f)
         {
             isMoving = false;
-            characterController.SetAnimationState(idleState);
             transform.position = targetPosition;
+            characterController.SetAnimationState(idleState);
         }
         else
         {
