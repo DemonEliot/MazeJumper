@@ -5,7 +5,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 
-    private Vector2 targetPosition;
+    private Vector3 targetPosition;
+
     private bool isMoving = false;
     private bool canPlayerMove = true;
     private float speed = 2f;
@@ -17,41 +18,32 @@ public class Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        targetPosition = Vector3Extension.AsVector2(transform.position);
+        targetPosition = transform.position;
         characterController = this.gameObject.GetComponent<CharacterController>();
     }
-
-    // speed = distance / time
-    // Vector3 direction = target.position - transform.position;
-    // float distance = direction.magnitude;
-    // float time = 1.0f;//seconds
-
-    // void Update()
-    // {
-        // transform.Translate(direction * (Time.deltaTime*(distance/time)));
-    // }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 characterPosition = Vector3Extension.AsVector2(transform.position);
-        if (Vector2.Distance(characterPosition, targetPosition) < 0.001f)
+        float distance = Vector3.Distance(transform.position, targetPosition);
+        if (distance < 0.1f)
         {
             isMoving = false;
             characterController.SetAnimationState(idleState);
+            transform.position = targetPosition;
         }
         else
         {
             if (canPlayerMove)
             {
-                //Keeps the player to a grid based movement.
-                isMoving = true;
-                characterController.SetAnimationState(walkingState);
-                Vector3 targetPosition3D = new Vector3(targetPosition.x, transform.position.y, targetPosition.y);
-                float step = speed * Time.deltaTime;
-                //transform.position = transform.forward * step;
-                //transform.position = Vector3.Lerp(transform.position, targetPosition3D, step);
-                //transform.position = Vector3.MoveTowards(transform.position, targetPosition3D, step);
+                if (!isMoving)
+                {
+                    float step = speed * Time.deltaTime;
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+
+                    isMoving = true;
+                    characterController.SetAnimationState(walkingState);
+                }
             }
         }
     }
@@ -64,7 +56,7 @@ public class Movement : MonoBehaviour
 
     public void SetTargetPosition(Vector2 newPosition)
     {
-        targetPosition = newPosition;
+        targetPosition = new Vector3(newPosition.x, transform.position.y, newPosition.y);
     }
 
     public void SetSpeed(int newSpeed)
