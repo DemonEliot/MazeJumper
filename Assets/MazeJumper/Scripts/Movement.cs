@@ -5,29 +5,42 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 
-    private float speed = 2;
     private Vector2 targetPosition;
     private bool isMoving = false;
     private bool canPlayerMove = true;
+    private float speed = 2;
+
+    CharacterController characterController;
+    public const int idleState = 0;
+    public const int walkingState = 1;
 
     // Start is called before the first frame update
     void Start()
     {
-        targetPosition = transform.position;
+        targetPosition = Vector3Extension.AsVector2(transform.position);
+        characterController = this.gameObject.GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector3Extension.AsVector2(transform.position) != targetPosition && canPlayerMove)
+        Vector2 characterPosition = Vector3Extension.AsVector2(transform.position);
+        if (Vector2.Distance(characterPosition, targetPosition) < 0.001f)
         {
-            //Keeps the player to a grid based movement.
-            isMoving = true;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed);
+            isMoving = false;
+            characterController.SetAnimationState(idleState);
         }
         else
         {
-            isMoving = false;
+            if (canPlayerMove)
+            {
+                //Keeps the player to a grid based movement.
+                isMoving = true;
+                characterController.SetAnimationState(walkingState);
+                Vector3 targetPosition3D = new Vector3(targetPosition.x, transform.position.y, targetPosition.y);
+                float step = speed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition3D, step);
+            }
         }
     }
 

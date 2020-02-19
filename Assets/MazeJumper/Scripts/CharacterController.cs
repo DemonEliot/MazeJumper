@@ -17,8 +17,6 @@ public class CharacterController : MonoBehaviour
 
     // Animation
     private Animation animate;
-    private const int idleState = 0;
-    private const int walkingState = 1;
 
     // Movement
     Movement movementScript;
@@ -49,7 +47,7 @@ public class CharacterController : MonoBehaviour
         }
 
         // Takes in movement input and checks for valid locations to move to
-        if (movementScript.GetPlayerCanMove())
+        if (movementScript.GetPlayerCanMove() && !movementScript.GetIsMoving())
         {
             MovementInputCheck();
         }
@@ -57,11 +55,11 @@ public class CharacterController : MonoBehaviour
 
     void CheckCurrentNode()
     {
-        GameObject currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
-        Node currentNodeScript = currentNodeObject.GetComponent<Node>();
+        if (AllNodes.DoesDictionaryContainKey(Vector3Extension.AsVector2(this.transform.position)))
+        { 
+            GameObject currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
+            Node currentNodeScript = currentNodeObject.GetComponent<Node>();
 
-        if (currentNodeObject != null)
-        {
             if (!particleControllerScript.GetIsIntangible())
             {
                 // As a person
@@ -86,7 +84,7 @@ public class CharacterController : MonoBehaviour
                     case Tags.RIGHT:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeRight().transform.position), Vector3.right);
                         ChangeToParticle();
-                        break;                     
+                        break;
                 }
             }
             else
@@ -112,30 +110,17 @@ public class CharacterController : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            Debug.Log("WARNING! Somehow standing on null space and trying to check for a node. This shouldn't be happening.");
-        }
     }
 
     void ChangeTargetPosition(Vector2 newPosition, Vector3 direction)
     {
         movementScript.SetTargetPosition(newPosition);
         movementScript.RotateTowardsDirection(direction);
-
-        if (!particleControllerScript.GetIsIntangible())
-        {
-            animate.SetAnimationState(walkingState);
-        }
     }
 
     void ChangeToFlesh()
     {
         movementScript.SetSpeed(2);
-        //if (transform.position.y < 0.49)
-        //{
-        //    transform.position = new Vector3(transform.position.x, 0.49f, transform.position.z);
-        //}
         particleControllerScript.EnableRender(true);
     }
 
@@ -176,7 +161,7 @@ public class CharacterController : MonoBehaviour
     void NodeCheck(Vector3 directionToMove)
     {
         Vector2 newPosition = Vector3Extension.AsVector2(this.transform.position + directionToMove);
-        if (AllNodes.GetNodeByPosition(newPosition) != null)
+        if (AllNodes.DoesDictionaryContainKey(newPosition))
         {
             ChangeTargetPosition(newPosition, directionToMove);
         }
@@ -209,7 +194,6 @@ public class CharacterController : MonoBehaviour
 
     public void ResetCharacter(GameObject environment)
     {
-        animate.SetAnimationState(idleState);
         transform.position = startPosition;
         transform.rotation = startRotation;
         movementScript.SetTargetPosition(startPosition);
@@ -225,6 +209,15 @@ public class CharacterController : MonoBehaviour
         foreach (Transform child in environment.transform)
         {
             child.GetComponent<ChangeObject>().ResetCrosses();
+        }
+    }
+
+    // Only want to change animation state when the character is actually there
+    public void SetAnimationState(int state)
+    {
+        if (!particleControllerScript.GetIsIntangible())
+        {
+            animate.SetAnimationState(state);
         }
     }
 }
