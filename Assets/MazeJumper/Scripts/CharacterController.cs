@@ -13,7 +13,6 @@ public class CharacterController : MonoBehaviour
     private const int particleSpeed = 4;
 
     // Main Camera
-    private GameObject cameraObject;
     private Camera cameraScript;
 
     // Animation
@@ -23,6 +22,9 @@ public class CharacterController : MonoBehaviour
     Movement movementScript;
     private const int characterSpeed = 2;
 
+    // UI
+    UI uiScript;
+
     // Use this for initialization
     void Start()
     {
@@ -31,12 +33,13 @@ public class CharacterController : MonoBehaviour
 
         particleControllerScript = this.gameObject.GetComponent<ParticleController>();
 
-        cameraObject = GameObject.FindWithTag(Tags.MAINCAMERA);
-        cameraScript = cameraObject.GetComponent<Camera>();
+        cameraScript = GameObject.FindWithTag(Tags.MAINCAMERA).GetComponent<Camera>();
 
         animate = this.gameObject.GetComponent<Animation>();
 
         movementScript = this.gameObject.GetComponent<Movement>();
+
+        uiScript = GameObject.FindWithTag(Tags.UI).GetComponent<UI>();
     }
 
     // Update is called once per frame
@@ -68,8 +71,7 @@ public class CharacterController : MonoBehaviour
                 switch (currentNodeObject.tag)
                 {
                     case Tags.END:
-                        // TODO End level if player is not a particle
-                        // UIContainer.GetComponent<UI>().LevelEnd();
+                        uiScript.LevelEnd();
                         break;
                     case Tags.UP:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeUp().transform.position), Vector3.forward);

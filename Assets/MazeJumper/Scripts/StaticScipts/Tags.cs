@@ -21,5 +21,8 @@ public static class Tags
     // Camera
     public const string MAINCAMERA = "MainCamera";
 
+    // UI
+    public const string UI = "UI";
+
 
 }
