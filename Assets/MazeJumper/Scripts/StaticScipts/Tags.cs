@@ -24,5 +24,11 @@ public static class Tags
     // UI
     public const string UI = "UI";
 
+    // Player
+    public const string PLAYER = "Player";
+
+    // Crystal
+    public const string CRYSTAL = "crystal";
+
 
 }

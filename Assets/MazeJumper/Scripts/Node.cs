@@ -9,8 +9,7 @@ public class Node : MonoBehaviour
     private List<GameObject> nodesGoesHereList = new List<GameObject>();
     private GameObject environment;
 
-    // Start is called before the first frame update
-    private void Start()
+    void Awake()
     {
         if (AllNodes.DoesDictionaryContainKey(Vector3Extension.AsVector2(this.transform.position)))
         {
@@ -23,9 +22,6 @@ public class Node : MonoBehaviour
         // Need to determine what type of node this is as to where the player could go from it
         switch (this.gameObject.tag)
         {
-            case Tags.END:
-                break;
-            case Tags.START:
             case Tags.FLOOR:
             case Tags.GATE:
 
