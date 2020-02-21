@@ -15,7 +15,6 @@ public class GridCreation : MonoBehaviour {
     {
         if (Application.isEditor)
         {
-
             GameObject[,] grid = new GameObject[gridRow, gridColumn];
 
             for (int i = 0; i < gridRow; i++)
