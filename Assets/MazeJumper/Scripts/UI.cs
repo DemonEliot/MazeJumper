@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+// Refactor names of all methods
 public class UI : MonoBehaviour {
 
     private GameObject inGameMenuCanvas;
@@ -11,8 +13,10 @@ public class UI : MonoBehaviour {
 
     private GameObject cameraMain;
     private GameObject player;
-    private GameObject eventSystem;
     private GameObject environment;
+
+    private CharacterController characterController;
+    private Camera camera;
 
     void Start()
     {
@@ -21,13 +25,15 @@ public class UI : MonoBehaviour {
         int.TryParse(name, out iName);
         if (iName !=0)
         {
-            player = GameObject.FindWithTag("Player");
-            eventSystem = GameObject.FindWithTag("EventSystem");
-            cameraMain = GameObject.FindWithTag("MainCamera");
+            player = GameObject.FindWithTag(Tags.PLAYER);
+            cameraMain = GameObject.FindWithTag(Tags.MAINCAMERA);
             inGameMenuCanvas = transform.Find("InGameMenu").gameObject;
             endOfLevelCanvas = transform.Find("EndLevelCanvas").gameObject;
             gameButtonsUI = transform.Find("UIButtons").gameObject;
             environment = GameObject.Find("Environment");
+
+            characterController = player.GetComponent<CharacterController>();
+            camera = MainCamera.GetComponent<Camera>();
         }
     }
 
@@ -50,7 +56,7 @@ public class UI : MonoBehaviour {
     public void OnMainMenu()
     {
         //Loads the main menu scene
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene(Tags.MAINMENU);
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;
@@ -120,17 +126,17 @@ public class UI : MonoBehaviour {
 
     public void CameraMode()
     {
-        cameraMain.GetComponent<Camera>().SwitchCameraMode();
+        camera.SwitchCameraMode();
     }
 
     public void MovementDirection(string direction)
     {
-        player.GetComponent<CharacterController>().MobileInput(direction);
+        characterController.MobileInput(direction);
     }
 
     public void Reset()
     {
-        player.GetComponent<CharacterController>().ResetCharacter(environment);
+        characterController.ResetCharacter(environment);
     }
 
     void Update()

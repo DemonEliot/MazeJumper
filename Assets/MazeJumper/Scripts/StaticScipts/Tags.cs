@@ -30,5 +30,8 @@ public static class Tags
     // Crystal
     public const string CRYSTAL = "crystal";
 
+    // Scene
+    public const string MAINMENU = "Main Menu";
+
 
 }
