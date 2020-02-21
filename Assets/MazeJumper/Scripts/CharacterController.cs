@@ -202,9 +202,7 @@ public class CharacterController : MonoBehaviour
 
     public void ResetCharacter(GameObject environment)
     {
-        movementScript.SetTargetPosition(startPosition);
-        movementScript.MoveTowards();
-        SetAnimationState(0);
+        movementScript.SetTargetPosition(Vector3Extension.AsVector2(startPosition));
         transform.position = startPosition;
         transform.rotation = startRotation;
         movementScript.SetPlayerCanMove(true);
