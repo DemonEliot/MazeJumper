@@ -23,15 +23,18 @@ public static class Tags
 
     // UI
     public const string UI = "UI";
+    public const string GAMEMENU = "InGameMenu";
+    public const string ENDLEVEL = "EndLevelCanvas";
+    public const string BUTTONS = "UIButtons";
 
     // Player
     public const string PLAYER = "Player";
 
-    // Crystal
-    public const string CRYSTAL = "crystal";
-
     // Scene
     public const string MAINMENU = "Main Menu";
 
+    // Other GameObjects
+    public const string ENVIRONMENT = "Environment";
+    public const string CRYSTAL = "crystal";
 
 }

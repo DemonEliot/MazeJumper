@@ -8,62 +8,56 @@ public class CubeChange : MonoBehaviour {
     // This script is attached to an empty gameobject called GameChange.
     // It is used to update all cubes in the scene to the latest prefab (because the cubes are clones, they are no longer attached to their prefabs...)
 
-    GameObject[] rightCubeList, leftCubeList, upCubeList, downCubeList, gateCubeList, floorCubeList;
+    GameObject[] rightCubeList, leftCubeList, upCubeList, downCubeList, gateCubeList, floorCubeList, startCubeList, endCubeList;
     public GameObject[] newCubeList = new GameObject[6];
+    private GameObject environment;
 
     // Use this for initialization
     void Start()
     {
         if (Application.isEditor)
         {
-            rightCubeList = GameObject.FindGameObjectsWithTag("right");
-            leftCubeList = GameObject.FindGameObjectsWithTag("left");
-            upCubeList = GameObject.FindGameObjectsWithTag("up");
-            downCubeList = GameObject.FindGameObjectsWithTag("down");
-            gateCubeList = GameObject.FindGameObjectsWithTag("gate");
-            floorCubeList = GameObject.FindGameObjectsWithTag("floor");
+            floorCubeList = GameObject.FindGameObjectsWithTag(Tags.FLOOR);
+            gateCubeList = GameObject.FindGameObjectsWithTag(Tags.GATE);
+            upCubeList = GameObject.FindGameObjectsWithTag(Tags.UP);
+            downCubeList = GameObject.FindGameObjectsWithTag(Tags.DOWN);
+            leftCubeList = GameObject.FindGameObjectsWithTag(Tags.LEFT);
+            rightCubeList = GameObject.FindGameObjectsWithTag(Tags.RIGHT);
+            startCubeList = GameObject.FindGameObjectsWithTag(Tags.START);
+            endCubeList = GameObject.FindGameObjectsWithTag(Tags.END);
 
-            for (int i = rightCubeList.Length-1; i > -1; i--)
+            environment = GameObject.Find(Tags.ENVIRONMENT);
+            if (environment == null)
             {
-                //Debug.Log(rightCubeList[i]);
-                Instantiate(newCubeList[5], rightCubeList[i].transform.position, Quaternion.identity);
-                DestroyImmediate(rightCubeList[i]);
+                //environment = new GameObject(Tags.ENVIRONMENT);
+                Instantiate(environment, new Vector3(0, 0, 0), Quaternion.identity);
             }
 
-            for (int i = leftCubeList.Length-1; i > -1; i--)
-            {
-                //Debug.Log(leftCubeList[i]);
-                Instantiate(newCubeList[4], leftCubeList[i].transform.position, Quaternion.identity);
-                DestroyImmediate(leftCubeList[i]);
-            }
+            InstantiateNewCubes(floorCubeList, 0);
+            InstantiateNewCubes(gateCubeList, 1);
+            InstantiateNewCubes(upCubeList, 2);
+            InstantiateNewCubes(downCubeList, 3);
+            InstantiateNewCubes(leftCubeList, 4);
+            InstantiateNewCubes(rightCubeList, 5);
+            InstantiateNewCubes(startCubeList, 0);
+            InstantiateNewCubes(endCubeList, 0);
+        }
+    }
 
-            for (int i = downCubeList.Length-1; i > -1; i--)
+    private void InstantiateNewCubes(GameObject[] cubes, int cubeListIndex)
+    {
+        for (int i = cubes.Length - 1; i > -1; i--)
+        {
+            //Debug.Log(cubes[i]);
+            if (environment != null)
             {
-                //Debug.Log(downCubeList[i]);
-                Instantiate(newCubeList[3], downCubeList[i].transform.position, Quaternion.identity);
-                DestroyImmediate(downCubeList[i]);
+                Instantiate(newCubeList[cubeListIndex], cubes[i].transform.position, Quaternion.identity, environment.transform);
             }
-
-            for (int i = upCubeList.Length-1; i > -1; i--)
+            else
             {
-                //Debug.Log(upCubeList[i]);
-                Instantiate(newCubeList[2], upCubeList[i].transform.position, Quaternion.identity);
-                DestroyImmediate(upCubeList[i]);
+                Instantiate(newCubeList[0], cubes[i].transform.position, Quaternion.identity);
             }
-
-            for (int i = gateCubeList.Length-1; i > -1; i--)
-            {
-                //Debug.Log(gateCubeList[i]);
-                Instantiate(newCubeList[1], gateCubeList[i].transform.position, Quaternion.identity);
-                DestroyImmediate(gateCubeList[i]);
-            }
-
-            for (int i = floorCubeList.Length - 1; i > -1; i--)
-            {
-                //Debug.Log(floorCubeList[i]);
-                Instantiate(newCubeList[0], floorCubeList[i].transform.position, Quaternion.identity);
-                DestroyImmediate(floorCubeList[i]);
-            }
+            DestroyImmediate(cubes[i]);
         }
     }
 }

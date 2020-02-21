@@ -22,4 +22,9 @@ public static class AllNodes
         allNodes.Add(Vector3Extension.AsVector2(newNode.transform.position), newNode);
     }
 
+    public static void ClearAllNodes()
+    {
+        allNodes.Clear();
+    }
+
 }

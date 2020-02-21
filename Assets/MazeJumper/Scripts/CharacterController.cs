@@ -202,9 +202,11 @@ public class CharacterController : MonoBehaviour
 
     public void ResetCharacter(GameObject environment)
     {
+        movementScript.SetTargetPosition(startPosition);
+        movementScript.MoveTowards();
+        SetAnimationState(0);
         transform.position = startPosition;
         transform.rotation = startRotation;
-        movementScript.SetTargetPosition(startPosition);
         movementScript.SetPlayerCanMove(true);
         ChangeToFlesh();
         particleControllerScript.ClearParticle();
@@ -216,7 +218,7 @@ public class CharacterController : MonoBehaviour
 
         foreach (Transform child in environment.transform)
         {
-            child.GetComponent<ChangeObject>().ResetCrosses();
+            child.GetComponent<Cross>().ResetCrosses();
         }
     }
 

@@ -38,14 +38,18 @@ public class Movement : MonoBehaviour
             {
                 if (!isMoving)
                 {
-                    float step = speed * Time.deltaTime;
-                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
-
+                    MoveTowards();
                     isMoving = true;
                     characterController.SetAnimationState(walkingState);
                 }
             }
         }
+    }
+
+    public void MoveTowards()
+    {
+        float step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
     }
 
     public void RotateTowardsDirection(Vector3 directionToMove)

@@ -27,10 +27,10 @@ public class UI : MonoBehaviour {
         {
             player = GameObject.FindWithTag(Tags.PLAYER);
             cameraMain = GameObject.FindWithTag(Tags.MAINCAMERA);
-            inGameMenuCanvas = transform.Find("InGameMenu").gameObject;
-            endOfLevelCanvas = transform.Find("EndLevelCanvas").gameObject;
-            gameButtonsUI = transform.Find("UIButtons").gameObject;
-            environment = GameObject.Find("Environment");
+            inGameMenuCanvas = transform.Find(Tags.GAMEMENU).gameObject;
+            endOfLevelCanvas = transform.Find(Tags.ENDLEVEL).gameObject;
+            gameButtonsUI = transform.Find(Tags.BUTTONS).gameObject;
+            environment = GameObject.Find(Tags.ENVIRONMENT);
 
             characterController = player.GetComponent<CharacterController>();
             cameraScript = cameraMain.GetComponent<Camera>();
@@ -75,6 +75,8 @@ public class UI : MonoBehaviour {
 
     public void NextLevel()
     {
+        AllNodes.ClearAllNodes();
+
         //Get the current scene name, turn it into an int and +1 for next level
         string name = SceneManager.GetActiveScene().name;
         int iName = 0;
