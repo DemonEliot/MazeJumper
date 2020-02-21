@@ -16,7 +16,7 @@ public class UI : MonoBehaviour {
     private GameObject environment;
 
     private CharacterController characterController;
-    private Camera camera;
+    private Camera cameraScript;
 
     void Start()
     {
@@ -33,7 +33,7 @@ public class UI : MonoBehaviour {
             environment = GameObject.Find("Environment");
 
             characterController = player.GetComponent<CharacterController>();
-            camera = MainCamera.GetComponent<Camera>();
+            cameraScript = cameraMain.GetComponent<Camera>();
         }
     }
 
@@ -126,7 +126,7 @@ public class UI : MonoBehaviour {
 
     public void CameraMode()
     {
-        camera.SwitchCameraMode();
+        cameraScript.SwitchCameraMode();
     }
 
     public void MovementDirection(string direction)

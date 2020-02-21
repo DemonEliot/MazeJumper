@@ -135,6 +135,7 @@ public class CharacterController : MonoBehaviour
         particleControllerScript.EnableRender(false);
     }
 
+    // Movement for PC
     void MovementInputCheck()
     {
         // Before any movement happens, checks if there is a valid location to move to
@@ -142,12 +143,6 @@ public class CharacterController : MonoBehaviour
         {
             // Up
             NodeCheck(Vector3.forward);
-        }
-
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            // Right
-            NodeCheck(Vector3.right);
         }
 
         else if (Input.GetKey(KeyCode.DownArrow))
@@ -160,6 +155,35 @@ public class CharacterController : MonoBehaviour
         {
             // Left
             NodeCheck(Vector3.left);
+        }
+
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            // Right
+            NodeCheck(Vector3.right);
+        }
+    }
+
+    // Movement for Mobile
+    public void MobileInput(string direction)
+    {
+        if (movementScript.GetPlayerCanMove() && !movementScript.GetIsMoving())
+        {
+            switch (direction)
+            {
+                case (Tags.UP):
+                    NodeCheck(Vector3.forward);
+                    break;
+                case (Tags.DOWN):
+                    NodeCheck(Vector3.back);
+                    break;
+                case (Tags.LEFT):
+                    NodeCheck(Vector3.left);
+                    break;
+                case (Tags.RIGHT):
+                    NodeCheck(Vector3.right);
+                    break;
+            }
         }
     }
 
@@ -174,27 +198,6 @@ public class CharacterController : MonoBehaviour
         {
             movementScript.RotateTowardsDirection(directionToMove);
         }
-    }
-
-    public void MobileInput(string direction)
-    {
-        //    switch (direction)
-        //    {
-        //        case ("Up"):
-        //            //Ray(Vector3.forward);
-        //            break;
-        //        case ("Down"):
-        //            //Ray(Vector3.back);
-        //            break;
-        //        case ("Right"):
-        //            //Ray(Vector3.right);
-        //            break;
-        //        case ("Left"):
-        //            //Ray(Vector3.left);
-        //            break;
-        //        default:
-        //            break;
-        //    }
     }
 
     public void ResetCharacter(GameObject environment)
