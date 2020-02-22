@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class CharacterController : MonoBehaviour
@@ -23,7 +24,7 @@ public class CharacterController : MonoBehaviour
     private const int characterSpeed = 2;
 
     // UI
-    UI uiScript;
+    private UI uiScript;
 
     // Use this for initialization
     void Start()
@@ -72,6 +73,14 @@ public class CharacterController : MonoBehaviour
                 {
                     case Tags.END:
                         uiScript.LevelEnd();
+                        Debug.Log("Scene name is: " + SceneManager.GetActiveScene().name);
+                        Debug.Log("Scene as string is: " + SceneManager.GetActiveScene().ToString());
+                        LevelProgress.SaveCompletedLevel(SceneManager.GetActiveScene().name);
+
+                        foreach (string level in LevelProgress.LoadCompletedLevels())
+                        {
+                            Debug.Log("Level complete: " + level);
+                        }
                         break;
                     case Tags.UP:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeUp().transform.position), Vector3.forward);

@@ -36,4 +36,19 @@ public static class AutoUpdateAllCubes
             }
         }
     }
+
+    [MenuItem("Editing/Save")]
+    static void SaveTest()
+    {
+        LevelProgress.SaveCompletedLevel(EditorSceneManager.GetActiveScene().name);
+    }
+
+    [MenuItem("Editing/Load")]
+    static void LoadTest()
+    {
+        foreach (string level in LevelProgress.LoadCompletedLevels())
+        {
+            Debug.Log("Level complete: " + level);
+        }
+    }
 }
