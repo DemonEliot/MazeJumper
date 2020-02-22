@@ -36,5 +36,6 @@ public static class Tags
     // Other GameObjects
     public const string ENVIRONMENT = "Environment";
     public const string CRYSTAL = "crystal";
+    public const string CUBEUPDATER = "CubeUpdater";
 
 }
