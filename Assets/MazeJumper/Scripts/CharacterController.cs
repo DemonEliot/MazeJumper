@@ -52,7 +52,7 @@ public class CharacterController : MonoBehaviour
         }
 
         // Takes in movement input and checks for valid locations to move to
-        if (movementScript.GetPlayerCanMove() && !movementScript.GetIsMoving())
+        if (movementScript.GetPlayerCanMove() && !movementScript.GetIsMoving() && !particleControllerScript.GetIsIntangible())
         {
             MovementInputCheck();
         }
