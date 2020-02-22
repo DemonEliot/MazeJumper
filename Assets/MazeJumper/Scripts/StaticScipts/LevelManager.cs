@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class LevelProgress
+public static class LevelManager
 {
     private static List<string> completedLevels = new List<string>();
 
@@ -27,5 +27,11 @@ public static class LevelProgress
     public static void ResetLevelCompletion()
     {
         completedLevels = new List<string>();
+    }
+
+    public static void EndLevel(UI ui, string sceneName)
+    {
+        ui.LevelEndMenu();
+        SaveCompletedLevel(sceneName);
     }
 }

@@ -9,7 +9,7 @@ public static class SaveSystem
         BinaryFormatter binaryFormatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/gamedata.maze";
         FileStream fileStream = new FileStream(path, FileMode.Create);
-        GameData gameData = new GameData(LevelProgress.GetCompletedLevels());
+        GameData gameData = new GameData(LevelManager.GetCompletedLevels());
 
         try
         {

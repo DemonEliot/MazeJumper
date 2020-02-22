@@ -37,7 +37,7 @@ public class UI : MonoBehaviour {
         }
     }
 
-    public void OnStart()
+    public void StartButton()
     {
         // Loads scene "1" and if the game is currently paused, sets the timescale to normal
         SceneManager.LoadScene("1");
@@ -47,13 +47,13 @@ public class UI : MonoBehaviour {
         }
     }
 
-    public void OnExit()
+    public void ExitButton()
     {
         // Quits the game
         Application.Quit();
     }
 
-    public void OnMainMenu()
+    public void MainMenuButton()
     {
         //Loads the main menu scene
         SceneManager.LoadScene(Tags.MAINMENU);
@@ -63,7 +63,7 @@ public class UI : MonoBehaviour {
         }
     }
 
-    public void SelectLevel(string level)
+    public void SelectLevelButton(string level)
     {
         //Load level
         SceneManager.LoadScene(level);
@@ -73,7 +73,7 @@ public class UI : MonoBehaviour {
         }
     }
 
-    public void NextLevel()
+    public void NextLevelButton()
     {
         AllNodes.ClearAllNodes();
 
@@ -89,7 +89,7 @@ public class UI : MonoBehaviour {
     }
 
 
-    public void GameMenu()
+    public void GameMenuToggle()
     {
         //Toggles the in-game menu
         if (Time.timeScale == 1)
@@ -104,7 +104,7 @@ public class UI : MonoBehaviour {
         }
     }
 
-    public void UIGameButtons()
+    public void GameButtonsToggle()
     {
         //Toggles visibility of UI in-game buttons
         if (gameButtonsUI.activeInHierarchy)
@@ -117,7 +117,7 @@ public class UI : MonoBehaviour {
         }
     }
 
-    public void LevelEnd()
+    public void LevelEndMenu()
     {
         //Make sure all the UI is turned off except the end level canvas
         gameButtonsUI.SetActive(false);
@@ -126,26 +126,26 @@ public class UI : MonoBehaviour {
         Time.timeScale = 0;
     }
 
-    public void CameraMode()
+    public void CameraModeButton()
     {
         cameraScript.SwitchCameraMode();
     }
 
-    public void MovementDirection(string direction)
+    public void MovementButtons(string direction)
     {
         characterController.MobileInput(direction);
     }
 
-    public void Reset()
+    public void ResetPlayerButton()
     {
         characterController.ResetCharacter(environment);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GameMenu();
+            GameMenuToggle();
         }
     }
 
