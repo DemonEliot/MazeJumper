@@ -44,7 +44,7 @@ public class CharacterController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // Before allowing movement, need to check if the player needs to move automatically, but only if they are not currently moving
         if (!movementScript.GetIsMoving())
@@ -73,14 +73,7 @@ public class CharacterController : MonoBehaviour
                 {
                     case Tags.END:
                         uiScript.LevelEnd();
-                        Debug.Log("Scene name is: " + SceneManager.GetActiveScene().name);
-                        Debug.Log("Scene as string is: " + SceneManager.GetActiveScene().ToString());
                         LevelProgress.SaveCompletedLevel(SceneManager.GetActiveScene().name);
-
-                        foreach (string level in LevelProgress.LoadCompletedLevels())
-                        {
-                            Debug.Log("Level complete: " + level);
-                        }
                         break;
                     case Tags.UP:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeUp().transform.position), Vector3.forward);

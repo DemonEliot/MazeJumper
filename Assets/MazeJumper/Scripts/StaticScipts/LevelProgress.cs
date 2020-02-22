@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class LevelProgress
 {
-    private static List<string> completedLevels;
+    private static List<string> completedLevels = new List<string>();
 
     public static List<string> GetCompletedLevels()
     {
@@ -22,5 +22,10 @@ public static class LevelProgress
         GameData gameData = SaveSystem.LoadGameData();
         completedLevels = gameData.GetCompletedLevels();
         return completedLevels;
+    }
+
+    public static void ResetLevelCompletion()
+    {
+        completedLevels = new List<string>();
     }
 }

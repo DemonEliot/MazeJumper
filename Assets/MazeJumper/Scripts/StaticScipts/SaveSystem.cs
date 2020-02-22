@@ -9,13 +9,19 @@ public static class SaveSystem
         BinaryFormatter binaryFormatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/gamedata.maze";
         FileStream fileStream = new FileStream(path, FileMode.Create);
-
         GameData gameData = new GameData(LevelProgress.GetCompletedLevels());
 
-        binaryFormatter.Serialize(fileStream, gameData);
-        fileStream.Close();
-
-        Debug.Log("Saved game");
+        try
+        {
+            binaryFormatter.Serialize(fileStream, gameData);
+        }
+        catch
+        {
+        }
+        finally
+        {
+            fileStream.Close();
+        }
     }
 
     public static GameData LoadGameData()
@@ -26,12 +32,15 @@ public static class SaveSystem
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             FileStream fileStream = new FileStream(path, FileMode.Open);
 
-            GameData gameData = (GameData)binaryFormatter.Deserialize(fileStream);
-            fileStream.Close();
-
-            Debug.Log("Loaded game");
-
-            return gameData;
+            try
+            {
+                GameData gameData = (GameData)binaryFormatter.Deserialize(fileStream);
+                return gameData;
+            }
+            finally
+            {
+                fileStream.Close();
+            }
         }
         else
         {

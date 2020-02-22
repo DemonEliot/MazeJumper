@@ -37,14 +37,8 @@ public static class AutoUpdateAllCubes
         }
     }
 
-    [MenuItem("Editing/Save")]
-    static void SaveTest()
-    {
-        LevelProgress.SaveCompletedLevel(EditorSceneManager.GetActiveScene().name);
-    }
-
-    [MenuItem("Editing/Load")]
-    static void LoadTest()
+    [MenuItem("Editing/Reset Save Data")]
+    static void ResetSaveData()
     {
         foreach (string level in LevelProgress.LoadCompletedLevels())
         {
