@@ -19,7 +19,7 @@ public class NodeAssignDynamic : MonoBehaviour
             switch (this.gameObject.tag)
             {
                 case Tags.PLAYER:
-                    node.tag = Tags.START;
+                    //node.tag = Tags.START;
                     break;
                 case Tags.CRYSTAL:
                     node.tag = Tags.END;

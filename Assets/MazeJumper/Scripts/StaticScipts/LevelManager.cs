@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class LevelManager : GenericSingletonClass<LevelManager>
+public class LevelManager : GenericSingletonClass<LevelManager>
 {
     private static List<string> completedLevels = new List<string>();
 

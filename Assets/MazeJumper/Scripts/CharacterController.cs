@@ -221,7 +221,6 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    // Only want to change animation state when the character is actually there
     public void SetAnimationState(int state)
     {
             animate.SetAnimationState(state);
