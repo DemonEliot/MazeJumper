@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class CharacterController : MonoBehaviour
@@ -23,7 +24,7 @@ public class CharacterController : MonoBehaviour
     private const int characterSpeed = 2;
 
     // UI
-    UI uiScript;
+    private UI uiScript;
 
     // Use this for initialization
     void Start()
@@ -43,7 +44,7 @@ public class CharacterController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // Before allowing movement, need to check if the player needs to move automatically, but only if they are not currently moving
         if (!movementScript.GetIsMoving())
@@ -71,7 +72,7 @@ public class CharacterController : MonoBehaviour
                 switch (currentNodeObject.tag)
                 {
                     case Tags.END:
-                        uiScript.LevelEnd();
+                        LevelManager.EndLevel(uiScript, SceneManager.GetActiveScene().name);
                         break;
                     case Tags.UP:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeUp().transform.position), Vector3.forward);
@@ -220,7 +221,6 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    // Only want to change animation state when the character is actually there
     public void SetAnimationState(int state)
     {
             animate.SetAnimationState(state);

@@ -92,7 +92,7 @@ public class Node : MonoBehaviour
             positionToCheck += directionToMove;
             foreach (Transform child in environment.transform)
             {
-                if (child.gameObject.tag != Tags.START || child.gameObject.tag != Tags.FLOOR || child.gameObject.tag != Tags.END)
+                if (child.gameObject.tag != Tags.START && child.gameObject.tag != Tags.FLOOR && child.gameObject.tag != Tags.END)
                 {
                     if (child.position == positionToCheck)
                     {

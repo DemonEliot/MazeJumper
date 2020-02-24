@@ -36,4 +36,13 @@ public static class AutoUpdateAllCubes
             }
         }
     }
+
+    [MenuItem("Editing/Reset Save Data")]
+    static void ResetSaveData()
+    {
+        foreach (string level in LevelManager.LoadCompletedLevels())
+        {
+            Debug.Log("Level complete: " + level);
+        }
+    }
 }
