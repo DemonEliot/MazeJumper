@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     private bool canPlayerMove = true;
     private float speed = 2f;
 
-    CharacterController characterController;
+    CharacterManager characterController;
     public const int idleState = 0;
     public const int walkingState = 1;
 
@@ -19,7 +19,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         targetPosition = transform.position;
-        characterController = this.gameObject.GetComponent<CharacterController>();
+        characterController = this.gameObject.GetComponent<CharacterManager>();
     }
 
     // Update is called once per frame

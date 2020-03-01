@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class LevelManager : GenericSingletonClass<LevelManager>
 {
-    private static List<string> completedLevels = new List<string>();
+    private static int completedLevels = 3;
 
-    public static List<string> GetCompletedLevels()
+    public static int GetCompletedLevels()
     {
         return completedLevels;
     }
 
-    public static void SaveCompletedLevel(string level)
+    public static void SaveCompletedLevel(int level)
     {
-        completedLevels.Add(level);
-        SaveSystem.SaveGameData();
+        if (level > completedLevels)
+        {
+            completedLevels = level;
+            SaveSystem.SaveGameData();
+        }
     }
 
-    public static List<string> LoadCompletedLevels()
+    public static int LoadCompletedLevels()
     {
         GameData gameData = SaveSystem.LoadGameData();
         completedLevels = gameData.GetCompletedLevels();
@@ -26,12 +29,12 @@ public class LevelManager : GenericSingletonClass<LevelManager>
 
     public static void ResetLevelCompletion()
     {
-        completedLevels = new List<string>();
+        completedLevels = 0;
     }
 
-    public static void EndLevel(UI ui, string sceneName)
+    public static void EndLevel(UI ui, int level)
     {
         ui.LevelEndMenu();
-        SaveCompletedLevel(sceneName);
+        SaveCompletedLevel(level);
     }
 }

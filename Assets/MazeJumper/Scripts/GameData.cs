@@ -5,14 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
-    private List<string> completedLevels;
+    private int completedLevels;
 
-    public GameData(List<string> levels)
+    public GameData(int levelsAlreadyCompleted)
     {
-        completedLevels = levels;
+        completedLevels = levelsAlreadyCompleted;
     }
 
-    public List<string> GetCompletedLevels()
+    public int GetCompletedLevels()
     {
         return completedLevels;
     }

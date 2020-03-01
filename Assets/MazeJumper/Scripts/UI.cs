@@ -15,7 +15,7 @@ public class UI : MonoBehaviour {
     private GameObject player;
     private GameObject environment;
 
-    private CharacterController characterController;
+    private CharacterManager characterController;
     private Camera cameraScript;
 
     void Start()
@@ -32,7 +32,7 @@ public class UI : MonoBehaviour {
             gameButtonsUI = transform.Find(Tags.BUTTONS).gameObject;
             environment = GameObject.Find(Tags.ENVIRONMENT);
 
-            characterController = player.GetComponent<CharacterController>();
+            characterController = player.GetComponent<CharacterManager>();
             cameraScript = cameraMain.GetComponent<Camera>();
         }
     }
