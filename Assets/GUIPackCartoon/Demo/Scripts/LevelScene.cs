@@ -21,33 +21,33 @@ namespace Ricimi
 
         private const int numLevelIndexes = 3;
 
-        private int m_currentLevelIndex = 0;
+        private int currentLevelIndex = 0;
 
-        private Animator m_animator;
+        private Animator animator;
 
         private void Awake()
         {
-            m_animator = levelGroup.GetComponent<Animator>();
+            animator = levelGroup.GetComponent<Animator>();
         }
 
         public void ShowPreviousLevels()
         {
-            --m_currentLevelIndex;
-            if (m_currentLevelIndex < 0)
-                m_currentLevelIndex = 0;
+            --currentLevelIndex;
+            if (currentLevelIndex < 0)
+                currentLevelIndex = 0;
 
-            SetLevelText(m_currentLevelIndex + 1);
-            switch (m_currentLevelIndex)
+            SetLevelText(currentLevelIndex + 1);
+            switch (currentLevelIndex)
             {
                 case 0:
-                    if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName("Animation4"))
-                        m_animator.Play("Animation4");
+                    if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation4"))
+                        animator.Play("Animation4");
                     DisablePrevLevelButton();
                     break;
 
                 case 1:
-                    if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName("Animation3"))
-                        m_animator.Play("Animation3");
+                    if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation3"))
+                        animator.Play("Animation3");
                     EnablePrevLevelButton();
                     EnableNextLevelButton();
                     break;
@@ -59,23 +59,23 @@ namespace Ricimi
 
         public void ShowNextLevels()
         {
-            ++m_currentLevelIndex;
-            if (m_currentLevelIndex == numLevelIndexes)
-                m_currentLevelIndex = numLevelIndexes - 1;
+            ++currentLevelIndex;
+            if (currentLevelIndex == numLevelIndexes)
+                currentLevelIndex = numLevelIndexes - 1;
 
-            SetLevelText(m_currentLevelIndex + 1);
-            switch (m_currentLevelIndex)
+            SetLevelText(currentLevelIndex + 1);
+            switch (currentLevelIndex)
             {
                 case 1:
-                    if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName("Animation1"))
-                        m_animator.Play("Animation1");
+                    if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation1"))
+                        animator.Play("Animation1");
                     EnablePrevLevelButton();
                     EnableNextLevelButton();
                     break;
 
                 case 2:
-                    if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName("Animation2"))
-                        m_animator.Play("Animation2");
+                    if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation2"))
+                        animator.Play("Animation2");
                     DisableNextLevelButton();
                     break;
 
@@ -146,7 +146,7 @@ namespace Ricimi
 
         private void SetLevelText(int level)
         {
-            levelText.text = level.ToString() + "/3";
+            levelText.text = level.ToString();
         }
     }
 }
