@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelManager : GenericSingletonClass<LevelManager>
 {
-    private static int completedLevels = 3;
+    private static int completedLevels = 12;
 
     public static int GetCompletedLevels()
     {

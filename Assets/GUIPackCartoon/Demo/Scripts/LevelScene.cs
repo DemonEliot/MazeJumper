@@ -21,15 +21,17 @@ namespace Ricimi
         public GameObject levelThreeStars;
         public GameObject levelLocked;
         public GameObject page;
+        private RectTransform levelGroupRectTransform;
 
         private readonly int totalLevels = 20;
         private readonly float pageOffsetX = 2358;
+        private readonly float levelPivotOffsetX = 23.58f;
 
         public Text levelText;
 
-        private const int numLevelIndexes = 3;
+        private const int numLevelIndexes = 2;
 
-        private int currentLevelIndex = 0;
+        private int currentLevelIndex = 1;
 
         private Animator animator;
 
@@ -38,6 +40,7 @@ namespace Ricimi
         private void Awake()
         {
             animator = levelGroup.GetComponent<Animator>();
+            levelGroupRectTransform = levelGroup.GetComponent<RectTransform>();
 
             CreateLevelsOnScreen();
         }
@@ -62,17 +65,21 @@ namespace Ricimi
                     pageTransform.localPosition = new Vector3(pageTransform.localPosition.x + pageOffsetX, pageTransform.localPosition.y, pageTransform.localPosition.z);
                 }
 
+                // If level is completed, need to create a level select with the right amount of stars...
                 if (i < levelsComplete)
                 {
-                    // If level is completed, need to create a level select with the right amount of stars...
-                    Instantiate(levelThreeStars, pageTransform.GetChild(index).position, Quaternion.identity, pageTransform.GetChild(index));
+                    GameObject level = Instantiate(levelThreeStars, pageTransform.GetChild(index).position, Quaternion.identity, pageTransform.GetChild(index));
+                    level.GetComponentInChildren<Text>().text = (i+1).ToString();
                 }
 
+                // If level after levels complete is available, needs to be the 'new level'
                 else if (levelsComplete != totalLevels && i == levelsComplete)
                 {
-                    Instantiate(levelNew, pageTransform.GetChild(index).position, Quaternion.identity, pageTransform.GetChild(index));
+                    GameObject level = Instantiate(levelNew, pageTransform.GetChild(index).position, Quaternion.identity, pageTransform.GetChild(index));
+                    level.GetComponentInChildren<Text>().text = (i+1).ToString();
                 }
 
+                // Every other level should be a locked level
                 else
                 {
                     Instantiate(levelLocked, pageTransform.GetChild(index).position, Quaternion.identity, pageTransform.GetChild(index));
@@ -83,26 +90,28 @@ namespace Ricimi
         public void ShowPreviousLevels()
         {
             --currentLevelIndex;
-            if (currentLevelIndex < 0)
-                currentLevelIndex = 0;
+            if (currentLevelIndex < 1)
+                currentLevelIndex = 1;
 
-            SetLevelText(currentLevelIndex + 1);
+            SetLevelText(currentLevelIndex);
             switch (currentLevelIndex)
             {
-                case 0:
-                    if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation4"))
-                        animator.Play("Animation4");
-                    DisablePrevLevelButton();
-                    break;
-
+                // If we've reached the first page... Disable previous button
                 case 1:
-                    if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation3"))
-                        animator.Play("Animation3");
-                    EnablePrevLevelButton();
+                    //if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation4"))
+                    //animator.Play("Animation4");
+                    levelGroupRectTransform.pivot -= new Vector2(levelPivotOffsetX, 0);
+                    DisablePrevLevelButton();
                     EnableNextLevelButton();
                     break;
-
+                
+                // Every other page should enable both buttons
                 default:
+                    //if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation3"))
+                    //animator.Play("Animation3");
+                    levelGroupRectTransform.pivot -= new Vector2(levelPivotOffsetX, 0);
+                    EnablePrevLevelButton();
+                    EnableNextLevelButton();
                     break;
             }
         }
@@ -110,26 +119,31 @@ namespace Ricimi
         public void ShowNextLevels()
         {
             ++currentLevelIndex;
-            if (currentLevelIndex == numLevelIndexes)
+            if (currentLevelIndex == numLevelIndexes+1)
                 currentLevelIndex = numLevelIndexes - 1;
 
-            SetLevelText(currentLevelIndex + 1);
+            SetLevelText(currentLevelIndex);
+
             switch (currentLevelIndex)
             {
-                case 1:
-                    if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation1"))
-                        animator.Play("Animation1");
-                    EnablePrevLevelButton();
-                    EnableNextLevelButton();
-                    break;
+                // If we've reached the end... Disable next button
+                case numLevelIndexes:
+                    //if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation2"))
+                    //animator.Play("Animation2");
 
-                case 2:
-                    if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation2"))
-                        animator.Play("Animation2");
+                    levelGroupRectTransform.pivot += new Vector2(levelPivotOffsetX, 0); 
+                    EnablePrevLevelButton();
                     DisableNextLevelButton();
                     break;
 
+                // Otherwise, enable both buttons
                 default:
+                    //if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation1"))
+                        //animator.Play("Animation1");
+
+                    levelGroupRectTransform.pivot += new Vector2(levelPivotOffsetX, 0);
+                    EnablePrevLevelButton();
+                    EnableNextLevelButton();
                     break;
             }
         }
