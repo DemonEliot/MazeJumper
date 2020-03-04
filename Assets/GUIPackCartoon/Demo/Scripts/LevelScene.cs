@@ -23,9 +23,10 @@ namespace Ricimi
         public GameObject page;
         private RectTransform levelGroupRectTransform;
 
-        private readonly int totalLevels = 20;
+        private readonly int totalLevels = 21;
         private readonly float pageOffsetX = 2358;
         private readonly float levelPivotOffsetX = 23.58f;
+        private int newLevelPage = 1;
 
         private readonly float timeOfTravel = 0.5f; //time after object reach a target place 
         private float currentTime = 0; // actual floting time 
@@ -37,7 +38,7 @@ namespace Ricimi
 
         public Text levelText;
 
-        private const int numLevelIndexes = 2;
+        private int numLevelIndexes;
 
         private int currentLevelIndex = 1;
 
@@ -50,8 +51,42 @@ namespace Ricimi
             animator = levelGroup.GetComponent<Animator>();
             levelGroupRectTransform = levelGroup.GetComponent<RectTransform>();
             moveScreen = false;
+            numLevelIndexes = (((totalLevels - 1) / 10) + 1);
 
             CreateLevelsOnScreen();
+            MoveScreenToCurrentPage();
+        }
+
+        private void MoveScreenToCurrentPage()
+        {
+            currentLevelIndex = newLevelPage;
+            SetLevelText(currentLevelIndex);
+
+            int levelOffsetMultiplier = currentLevelIndex - 1;
+
+            if (currentLevelIndex == numLevelIndexes)
+            {
+                startPosition = levelGroupRectTransform.pivot;
+                endPosition = startPosition + new Vector3(levelPivotOffsetX * levelOffsetMultiplier, 0, 0);
+
+                moveScreen = true;
+                EnablePrevLevelButton();
+                DisableNextLevelButton();  
+            }
+
+            else if (currentLevelIndex == 1)
+            {
+                // If new level is on first page, don't need to move...
+            }
+            else
+            {
+                startPosition = levelGroupRectTransform.pivot;
+                endPosition = startPosition + new Vector3(levelPivotOffsetX * levelOffsetMultiplier, 0, 0);
+
+                moveScreen = true;
+                EnablePrevLevelButton();
+                EnableNextLevelButton();
+            }
         }
 
         private void FixedUpdate()
@@ -98,8 +133,10 @@ namespace Ricimi
                 // If i is not 0, but is divisible by 10 we need to create a new page of levels
                 if (i != 0 && i % 10 == 0)
                 {
+                    int pageNumber = i / 10;
+
                     pageTransform = Instantiate(page, levelGroup.transform.position, Quaternion.identity, levelGroup.transform).transform;
-                    pageTransform.localPosition = new Vector3(pageTransform.localPosition.x + pageOffsetX, pageTransform.localPosition.y, pageTransform.localPosition.z);
+                    pageTransform.localPosition = new Vector3(pageTransform.localPosition.x + pageOffsetX * pageNumber, pageTransform.localPosition.y, pageTransform.localPosition.z);
                 }
 
                 // If level is completed, need to create a level select with the right amount of stars...
@@ -114,6 +151,7 @@ namespace Ricimi
                 {
                     GameObject level = Instantiate(levelNew, pageTransform.GetChild(index).position, Quaternion.identity, pageTransform.GetChild(index));
                     level.GetComponentInChildren<Text>().text = (i + 1).ToString();
+                    newLevelPage = ((i / 10) + 1);
                 }
 
                 // Every other level should be a locked level
@@ -131,29 +169,25 @@ namespace Ricimi
                 currentLevelIndex = 1;
 
             SetLevelText(currentLevelIndex);
-            switch (currentLevelIndex)
+            if (currentLevelIndex == 1)
             {
                 // If we've reached the first page... Disable previous button
-                case 1:
-                    //levelGroupRectTransform.pivot -= new Vector2(levelPivotOffsetX, 0);
-                    startPosition = levelGroupRectTransform.pivot;
-                    endPosition = startPosition - new Vector3(levelPivotOffsetX, 0, 0);
+                startPosition = levelGroupRectTransform.pivot;
+                endPosition = startPosition - new Vector3(levelPivotOffsetX, 0, 0);
 
-                    moveScreen = true;
-                    DisablePrevLevelButton();
-                    EnableNextLevelButton();
-                    break;
-
+                moveScreen = true;
+                DisablePrevLevelButton();
+                EnableNextLevelButton();
+            }
+            else
+            {
                 // Every other page should enable both buttons
-                default:
-                    //levelGroupRectTransform.pivot -= new Vector2(levelPivotOffsetX, 0);
-                    startPosition = levelGroupRectTransform.pivot;
-                    endPosition = startPosition - new Vector3(levelPivotOffsetX, 0, 0);
+                startPosition = levelGroupRectTransform.pivot;
+                endPosition = startPosition - new Vector3(levelPivotOffsetX, 0, 0);
 
-                    moveScreen = true;
-                    EnablePrevLevelButton();
-                    EnableNextLevelButton();
-                    break;
+                moveScreen = true;
+                EnablePrevLevelButton();
+                EnableNextLevelButton();
             }
         }
 
@@ -165,31 +199,26 @@ namespace Ricimi
 
             SetLevelText(currentLevelIndex);
 
-            switch (currentLevelIndex)
+            if (currentLevelIndex == numLevelIndexes)
             {
                 // If we've reached the end... Disable next button
-                case numLevelIndexes:
 
-                    //levelGroupRectTransform.pivot += new Vector2(levelPivotOffsetX, 0); 
-                    startPosition = levelGroupRectTransform.pivot;
-                    endPosition = startPosition + new Vector3(levelPivotOffsetX, 0, 0);
+                startPosition = levelGroupRectTransform.pivot;
+                endPosition = startPosition + new Vector3(levelPivotOffsetX, 0, 0);
 
-                    moveScreen = true;
-                    EnablePrevLevelButton();
-                    DisableNextLevelButton();
-                    break;
-
+                moveScreen = true;
+                EnablePrevLevelButton();
+                DisableNextLevelButton();
+            }
+            else
+            {
                 // Otherwise, enable both buttons
-                default:
+                startPosition = levelGroupRectTransform.pivot;
+                endPosition = startPosition + new Vector3(levelPivotOffsetX, 0, 0);
 
-                    //levelGroupRectTransform.pivot += new Vector2(levelPivotOffsetX, 0);
-                    startPosition = levelGroupRectTransform.pivot;
-                    endPosition = startPosition + new Vector3(levelPivotOffsetX, 0, 0);
-
-                    moveScreen = true;
-                    EnablePrevLevelButton();
-                    EnableNextLevelButton();
-                    break;
+                moveScreen = true;
+                EnablePrevLevelButton();
+                EnableNextLevelButton();
             }
         }
 
