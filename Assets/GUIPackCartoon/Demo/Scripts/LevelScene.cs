@@ -27,6 +27,14 @@ namespace Ricimi
         private readonly float pageOffsetX = 2358;
         private readonly float levelPivotOffsetX = 23.58f;
 
+        private readonly float timeOfTravel = 0.5f; //time after object reach a target place 
+        private float currentTime = 0; // actual floting time 
+        private float normalizedValue;
+
+        private Vector3 startPosition;
+        private Vector3 endPosition;
+        private bool moveScreen;
+
         public Text levelText;
 
         private const int numLevelIndexes = 2;
@@ -36,21 +44,50 @@ namespace Ricimi
         private Animator animator;
 
         private readonly List<Vector3> prefabLocations;
-     
+
         private void Awake()
         {
             animator = levelGroup.GetComponent<Animator>();
             levelGroupRectTransform = levelGroup.GetComponent<RectTransform>();
+            moveScreen = false;
 
             CreateLevelsOnScreen();
+        }
+
+        private void FixedUpdate()
+        {
+            if (moveScreen)
+            {
+                MoveLevelScreen();
+            }
+            else
+            {
+                currentTime = 0;
+            }
+        }
+
+        private void MoveLevelScreen()
+        {
+            if (currentTime <= timeOfTravel)
+            {
+                currentTime += Time.deltaTime;
+
+                if (currentTime > timeOfTravel)
+                {
+                    currentTime = timeOfTravel;
+                    moveScreen = false;
+                }
+
+                normalizedValue = currentTime / timeOfTravel; // we normalize our time 
+                normalizedValue = normalizedValue * normalizedValue * (3f - 2f * normalizedValue);
+
+                levelGroupRectTransform.pivot = Vector3.Lerp(startPosition, endPosition, normalizedValue);
+            }
         }
 
         public void CreateLevelsOnScreen()
         {
             Transform pageTransform = Instantiate(page, levelGroup.transform.position, Quaternion.identity, levelGroup.transform).transform;
-
-            //Need to get how many levels the player has completed...
-            //number of level for text
 
             int levelsComplete = LevelManager.GetCompletedLevels();
 
@@ -69,14 +106,14 @@ namespace Ricimi
                 if (i < levelsComplete)
                 {
                     GameObject level = Instantiate(levelThreeStars, pageTransform.GetChild(index).position, Quaternion.identity, pageTransform.GetChild(index));
-                    level.GetComponentInChildren<Text>().text = (i+1).ToString();
+                    level.GetComponentInChildren<Text>().text = (i + 1).ToString();
                 }
 
                 // If level after levels complete is available, needs to be the 'new level'
                 else if (levelsComplete != totalLevels && i == levelsComplete)
                 {
                     GameObject level = Instantiate(levelNew, pageTransform.GetChild(index).position, Quaternion.identity, pageTransform.GetChild(index));
-                    level.GetComponentInChildren<Text>().text = (i+1).ToString();
+                    level.GetComponentInChildren<Text>().text = (i + 1).ToString();
                 }
 
                 // Every other level should be a locked level
@@ -98,18 +135,22 @@ namespace Ricimi
             {
                 // If we've reached the first page... Disable previous button
                 case 1:
-                    //if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation4"))
-                    //animator.Play("Animation4");
-                    levelGroupRectTransform.pivot -= new Vector2(levelPivotOffsetX, 0);
+                    //levelGroupRectTransform.pivot -= new Vector2(levelPivotOffsetX, 0);
+                    startPosition = levelGroupRectTransform.pivot;
+                    endPosition = startPosition - new Vector3(levelPivotOffsetX, 0, 0);
+
+                    moveScreen = true;
                     DisablePrevLevelButton();
                     EnableNextLevelButton();
                     break;
-                
+
                 // Every other page should enable both buttons
                 default:
-                    //if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation3"))
-                    //animator.Play("Animation3");
-                    levelGroupRectTransform.pivot -= new Vector2(levelPivotOffsetX, 0);
+                    //levelGroupRectTransform.pivot -= new Vector2(levelPivotOffsetX, 0);
+                    startPosition = levelGroupRectTransform.pivot;
+                    endPosition = startPosition - new Vector3(levelPivotOffsetX, 0, 0);
+
+                    moveScreen = true;
                     EnablePrevLevelButton();
                     EnableNextLevelButton();
                     break;
@@ -119,7 +160,7 @@ namespace Ricimi
         public void ShowNextLevels()
         {
             ++currentLevelIndex;
-            if (currentLevelIndex == numLevelIndexes+1)
+            if (currentLevelIndex == numLevelIndexes + 1)
                 currentLevelIndex = numLevelIndexes - 1;
 
             SetLevelText(currentLevelIndex);
@@ -128,20 +169,24 @@ namespace Ricimi
             {
                 // If we've reached the end... Disable next button
                 case numLevelIndexes:
-                    //if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation2"))
-                    //animator.Play("Animation2");
 
-                    levelGroupRectTransform.pivot += new Vector2(levelPivotOffsetX, 0); 
+                    //levelGroupRectTransform.pivot += new Vector2(levelPivotOffsetX, 0); 
+                    startPosition = levelGroupRectTransform.pivot;
+                    endPosition = startPosition + new Vector3(levelPivotOffsetX, 0, 0);
+
+                    moveScreen = true;
                     EnablePrevLevelButton();
                     DisableNextLevelButton();
                     break;
 
                 // Otherwise, enable both buttons
                 default:
-                    //if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Animation1"))
-                        //animator.Play("Animation1");
 
-                    levelGroupRectTransform.pivot += new Vector2(levelPivotOffsetX, 0);
+                    //levelGroupRectTransform.pivot += new Vector2(levelPivotOffsetX, 0);
+                    startPosition = levelGroupRectTransform.pivot;
+                    endPosition = startPosition + new Vector3(levelPivotOffsetX, 0, 0);
+
+                    moveScreen = true;
                     EnablePrevLevelButton();
                     EnableNextLevelButton();
                     break;
