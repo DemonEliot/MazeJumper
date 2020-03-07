@@ -50,8 +50,7 @@ public class ChangeObject : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void OnEnable()
     {
         if (Application.isEditor)
         {
