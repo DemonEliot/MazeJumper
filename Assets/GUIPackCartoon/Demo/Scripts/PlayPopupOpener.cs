@@ -3,6 +3,7 @@
 // A Copy of the Asset Store EULA is available at http://unity3d.com/company/legal/as_terms.
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ricimi
 {
@@ -19,10 +20,16 @@ namespace Ricimi
             popup.SetActive(true);
             popup.transform.localScale = Vector3.zero;
             popup.transform.SetParent(m_canvas.transform, false);
+            popup.gameObject.GetComponentInChildren<Text>().text = "Level " + GetLevelText(); // Set level text in popup
 
             var playPopup = popup.GetComponent<PlayPopup>();
             playPopup.Open();
             playPopup.SetAchievedStars(starsObtained);
+        }
+
+        public string GetLevelText()
+        {
+            return this.gameObject.GetComponentInChildren<Text>().text;
         }
     }
 }

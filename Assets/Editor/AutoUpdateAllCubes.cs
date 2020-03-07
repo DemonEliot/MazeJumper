@@ -40,9 +40,9 @@ public static class AutoUpdateAllCubes
     [MenuItem("Editing/Reset Save Data")]
     static void ResetSaveData()
     {
-        foreach (string level in LevelManager.LoadCompletedLevels())
+        for (int i = 0; i < LevelManager.LoadCompletedLevels(); i++)
         {
-            Debug.Log("Level complete: " + level);
+            Debug.Log("Level complete: " + i);
         }
     }
 }
