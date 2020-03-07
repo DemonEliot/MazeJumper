@@ -3,6 +3,7 @@
 // A Copy of the Asset Store EULA is available at http://unity3d.com/company/legal/as_terms.
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ricimi
 {
@@ -17,6 +18,11 @@ namespace Ricimi
         public void PerformTransition()
         {
             Transition.LoadLevel(scene, duration, color);
+        }
+
+        public void GetLevelScene()
+        {
+            scene = this.transform.parent.GetComponentInChildren<Text>().text;
         }
     }
 }
