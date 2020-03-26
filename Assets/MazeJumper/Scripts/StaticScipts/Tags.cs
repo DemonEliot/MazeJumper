@@ -31,7 +31,7 @@ public static class Tags
     public const string PLAYER = "Player";
 
     // Scene
-    public const string MAINMENU = "Main Menu";
+    public const string LEVELSCENE = "LevelScene";
 
     // Other GameObjects
     public const string ENVIRONMENT = "Environment";

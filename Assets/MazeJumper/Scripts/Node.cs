@@ -86,6 +86,7 @@ public class Node : MonoBehaviour
         }
 
         bool checkForNode = true;
+        int safetyCounter = 0;
 
         do
         {
@@ -115,6 +116,12 @@ public class Node : MonoBehaviour
                         checkForNode = false;
                     }
                 }
+            }
+            safetyCounter++;
+            if (safetyCounter > 50)
+            {
+                Debug.LogError("ERROR with map design: Node " + this.tag + " at " + this.transform.position);
+                checkForNode = false;
             }
         } while (checkForNode);
     }
