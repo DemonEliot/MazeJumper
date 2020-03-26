@@ -56,7 +56,7 @@ public class UI : MonoBehaviour {
     public void MainMenuButton()
     {
         //Loads the main menu scene
-        SceneManager.LoadScene(Tags.MAINMENU);
+        SceneManager.LoadScene(Tags.LEVELSCENE);
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;
