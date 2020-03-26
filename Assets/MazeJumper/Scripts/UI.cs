@@ -18,11 +18,14 @@ public class UI : MonoBehaviour {
     private CharacterManager characterController;
     private Camera cameraScript;
 
+    private string sceneName;
+    private int iName;
+
     void Start()
     {
-        string name = SceneManager.GetActiveScene().name;
-        int iName = 0;
-        int.TryParse(name, out iName);
+        sceneName = SceneManager.GetActiveScene().name;
+        iName = 0;
+        int.TryParse(sceneName, out iName);
         if (iName !=0)
         {
             player = GameObject.FindWithTag(Tags.PLAYER);
@@ -76,12 +79,9 @@ public class UI : MonoBehaviour {
     public void NextLevelButton()
     {
         AllNodes.ClearAllNodes();
+        string nextLevel = (iName + 1).ToString();
 
-        //Get the current scene name, turn it into an int and +1 for next level
-        string name = SceneManager.GetActiveScene().name;
-        int iName = 0;
-        int.TryParse(name, out iName);
-        SceneManager.LoadScene(iName+1);
+        SceneManager.LoadScene(nextLevel);
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;

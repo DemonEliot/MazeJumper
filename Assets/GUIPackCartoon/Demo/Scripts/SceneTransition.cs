@@ -23,6 +23,7 @@ namespace Ricimi
         public void GetLevelScene()
         {
             scene = this.transform.parent.GetComponentInChildren<Text>().text;
+            scene = scene.Replace("Level ", "");
         }
     }
 }
