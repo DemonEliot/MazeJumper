@@ -53,9 +53,9 @@ public class UI : MonoBehaviour {
         Application.Quit();
     }
 
-    public void MainMenuButton()
+    public void LevelSelectButton()
     {
-        //Loads the main menu scene
+        //Loads the Level Select scene
         SceneManager.LoadScene(Tags.LEVELSCENE);
         if (Time.timeScale == 0)
         {
