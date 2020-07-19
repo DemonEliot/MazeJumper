@@ -48,6 +48,7 @@ public class UI : MonoBehaviour {
         {
             Time.timeScale = 1;
         }
+        AllNodes.ClearAllNodes();
     }
 
     public void ExitButton()
@@ -64,6 +65,8 @@ public class UI : MonoBehaviour {
         {
             Time.timeScale = 1;
         }
+        AllNodes.ClearAllNodes();
+
     }
 
     public void SelectLevelButton(string level)

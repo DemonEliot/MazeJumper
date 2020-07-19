@@ -16,51 +16,54 @@ public class Node : MonoBehaviour
             Debug.Log("WARNING! Multiple nodes exist at space: " + this.transform.position);
         }
 
+        else { 
+
         AllNodes.AddNodeToDictionary(this.gameObject);
         environment = this.transform.parent.gameObject;
 
-        // Need to determine what type of node this is as to where the player could go from it
-        switch (this.gameObject.tag)
-        {
-            case Tags.FLOOR:
-            case Tags.GATE:
+            // Need to determine what type of node this is as to where the player could go from it
+            switch (this.gameObject.tag)
+            {
+                case Tags.FLOOR:
+                case Tags.GATE:
 
-                // Can potentially walk in any direction, need to loop through all cubes and check if their positions are next to this node
-                // This loop checks the 'environment' gameobject children
-                foreach (Transform child in environment.transform)
-                {
-                    if (child.position == this.transform.position + Vector3.forward)
+                    // Can potentially walk in any direction, need to loop through all cubes and check if their positions are next to this node
+                    // This loop checks the 'environment' gameobject children
+                    foreach (Transform child in environment.transform)
                     {
-                        nodeUp = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
-                    }
+                        if (child.position == this.transform.position + Vector3.forward)
+                        {
+                            nodeUp = child.gameObject;
+                            child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
+                        }
 
-                    else if (child.position == this.transform.position + Vector3.back)
-                    {
-                        nodeDown = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
-                    }
+                        else if (child.position == this.transform.position + Vector3.back)
+                        {
+                            nodeDown = child.gameObject;
+                            child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
+                        }
 
-                    else if (child.position == this.transform.position + Vector3.left)
-                    {
-                        nodeLeft = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
-                    }
+                        else if (child.position == this.transform.position + Vector3.left)
+                        {
+                            nodeLeft = child.gameObject;
+                            child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
+                        }
 
-                    else if (child.position == this.transform.position + Vector3.right)
-                    {
-                        nodeRight = child.gameObject;
-                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
+                        else if (child.position == this.transform.position + Vector3.right)
+                        {
+                            nodeRight = child.gameObject;
+                            child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case Tags.UP:
-            case Tags.DOWN:
-            case Tags.LEFT:
-            case Tags.RIGHT:
-                GetNextNodeFromPortalMovement();
-                break;
+                case Tags.UP:
+                case Tags.DOWN:
+                case Tags.LEFT:
+                case Tags.RIGHT:
+                    GetNextNodeFromPortalMovement();
+                    break;
+            }
         }
     }
 
