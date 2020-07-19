@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 public static class AutoUpdateAllCubes
 {
 
+    // Is this even used?
     private static List<SceneAsset> scenes;
 
     [MenuItem("Editing/Auto Update All Cubes")]
