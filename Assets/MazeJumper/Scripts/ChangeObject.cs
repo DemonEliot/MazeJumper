@@ -5,20 +5,19 @@ using System.Collections;
 public class ChangeObject : MonoBehaviour
 {
 
+    /*
+     * This class is currently getting weird errors, and I won't be using it too much anyway, so I've locked everything down for now
+     */
+
+    /*
     public int cubeIndex = 0;
     public GameObject[] cubeList = new GameObject[7];
     public bool oneTimeCreation = false;
-    private Vector3 currentPos;
-
     private GameObject environment;
+    private bool checkForEnvironment = false;
+    */
 
-    private void GridSnap()
-    {
-        // This snaps to a grid when moving the cubes
-        currentPos = transform.position;
-        transform.position = new Vector3(Mathf.Round(currentPos.x), 0, Mathf.Round(currentPos.z));
-    }
-
+    /*
     private void ChangeCube()
     {
         // Creates new cube in location of current cube and destroys current cube.
@@ -36,7 +35,7 @@ public class ChangeObject : MonoBehaviour
                     Instantiate(cubeList[i], gameObject.transform.position, Quaternion.identity);
                 }
 
-                oneTimeCreation = true;
+                oneTimeCreation = false;
 
                 if (transform.parent == null || transform.parent == environment.transform)
                 {
@@ -49,23 +48,31 @@ public class ChangeObject : MonoBehaviour
             }
         }
     }
+    */
 
     private void OnEnable()
     {
         if (Application.isEditor)
         {
 
-            if (transform.parent == null || transform.parent.gameObject.name == Tags.ENVIRONMENT)
-            {
-                GridSnap();
-            }
-
             // For ease of use, I added this script to both the cubes, and the components inside the cubes. (For ease of level editing, you can click on the top layer and change it from there...)
             // Change the number in the public editor and tick oneTimeCreation to change the cube.
-            if (oneTimeCreation == false)
+            
+            /*
+            if (oneTimeCreation == true)
             {
+                if (!checkForEnvironment)
+                {
+                    if (transform.parent.gameObject.name == Tags.ENVIRONMENT)
+                    {
+                        environment = transform.parent.gameObject;
+                    }
+                }
+
                 ChangeCube();
             }
+            */
+
         }
     }
 }
