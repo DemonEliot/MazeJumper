@@ -5,6 +5,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace Ricimi
 {
@@ -23,7 +24,7 @@ namespace Ricimi
         public GameObject page;
         private RectTransform levelGroupRectTransform;
 
-        private readonly int totalLevels = 26;
+        private int totalLevels;
         private readonly float pageOffsetX = 2358;
         private readonly float levelPivotOffsetX = 23.58f;
         private int newLevelPage = 1;
@@ -51,6 +52,7 @@ namespace Ricimi
             animator = levelGroup.GetComponent<Animator>();
             levelGroupRectTransform = levelGroup.GetComponent<RectTransform>();
             moveScreen = false;
+            totalLevels = SceneManager.sceneCountInBuildSettings - 2; // Level count starts at 1 not 0, but also have 2 menu screens so -1
             numLevelIndexes = (((totalLevels - 1) / 10) + 1);
 
             CreateLevelsOnScreen();
