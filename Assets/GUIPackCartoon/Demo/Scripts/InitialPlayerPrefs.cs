@@ -16,6 +16,8 @@ namespace Ricimi
 
             if (!PlayerPrefs.HasKey("sound_on"))
                 PlayerPrefs.SetInt("sound_on", 1);
+
+            LevelManager.LoadCompletedLevels();
         }
     }
 }
