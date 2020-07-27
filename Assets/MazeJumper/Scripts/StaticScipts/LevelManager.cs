@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class LevelManager : GenericSingletonClass<LevelManager>
 {
-    private static int completedLevels = 15;
+    private static int completedLevels = 1;
 
+    // Does this ever run? Class is static.. Meaning this is never attached to an object to 'start'
     private void Start()
     {
         LoadCompletedLevels();
