@@ -14,16 +14,18 @@ namespace Ricimi
         public string scene = "<Insert scene name>";
         public float duration = 1.0f;
         public Color color = Color.black;
+        private bool isLevel = false;
 
         public void PerformTransition()
         {
-            Transition.LoadLevel(scene, duration, color);
+            Transition.LoadLevel(scene, duration, color, isLevel);
         }
 
         public void GetLevelScene()
         {
             scene = this.transform.parent.GetComponentInChildren<Text>().text;
             scene = scene.Replace("Level ", "");
+            isLevel = true;
         }
     }
 }

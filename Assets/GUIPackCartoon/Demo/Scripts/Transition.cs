@@ -27,23 +27,23 @@ namespace Ricimi
             DontDestroyOnLoad(m_canvas);
         }
 
-        public static void LoadLevel(string level, float duration, Color color)
+        public static void LoadLevel(string level, float duration, Color color, bool isLevel)
         {
             var fade = new GameObject("Transition");
             fade.AddComponent<Transition>();
-            fade.GetComponent<Transition>().StartFade(level, duration, color);
+            fade.GetComponent<Transition>().StartFade(level, duration, color, isLevel);
             fade.transform.SetParent(m_canvas.transform, false);
             fade.transform.SetAsLastSibling();
         }
 
-        private void StartFade(string level, float duration, Color fadeColor)
+        private void StartFade(string level, float duration, Color fadeColor, bool isLevel)
         {
-            StartCoroutine(RunFade(level, duration, fadeColor));
+            StartCoroutine(RunFade(level, duration, fadeColor, isLevel));
         }
 
         // This coroutine performs the core work of fading out of the current scene
         // and into the new scene.
-        private IEnumerator RunFade(string level, float duration, Color fadeColor)
+        private IEnumerator RunFade(string level, float duration, Color fadeColor, bool isLevel)
         {
             var bgTex = new Texture2D(1, 1);
             bgTex.SetPixel(0, 0, fadeColor);
@@ -76,7 +76,14 @@ namespace Ricimi
             image.canvasRenderer.SetAlpha(1.0f);
             yield return new WaitForEndOfFrame();
 
-            SceneManager.LoadScene(level);
+            if (isLevel)
+            {
+                SceneManager.LoadScene(int.Parse(level) + 1); // Update this when adding additional non-level scenes
+            }
+            else
+            {
+                SceneManager.LoadScene(level);
+            }
 
             time = 0.0f;
             while (time < halfDuration)

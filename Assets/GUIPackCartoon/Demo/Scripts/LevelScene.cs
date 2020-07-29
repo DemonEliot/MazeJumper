@@ -52,7 +52,7 @@ namespace Ricimi
             animator = levelGroup.GetComponent<Animator>();
             levelGroupRectTransform = levelGroup.GetComponent<RectTransform>();
             moveScreen = false;
-            totalLevels = SceneManager.sceneCountInBuildSettings - 2; // Level count starts at 1 not 0, but also have 2 menu screens so -1
+            totalLevels = SceneManager.sceneCountInBuildSettings - 2; // If any additional non-level screens are added, this needs to be increased
             numLevelIndexes = (((totalLevels - 1) / 10) + 1);
 
             CreateLevelsOnScreen();
