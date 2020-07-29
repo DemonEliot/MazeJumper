@@ -38,9 +38,10 @@ public class LevelManager : GenericSingletonClass<LevelManager>
         completedLevels = 0;
     }
 
-    public static void EndLevel(UI ui, int level)
+    public static void EndLevel(UI ui, string level)
     {
+        level = StringUtils.SplitAndTrimSceneName(level);
         ui.LevelEndMenu();
-        SaveCompletedLevel(level);
+        SaveCompletedLevel(int.Parse(level));
     }
 }

@@ -72,7 +72,7 @@ public class CharacterManager : MonoBehaviour
                 switch (currentNodeObject.tag)
                 {
                     case Tags.END:
-                        LevelManager.EndLevel(uiScript, int.Parse(SceneManager.GetActiveScene().name));
+                        LevelManager.EndLevel(uiScript, SceneManager.GetActiveScene().name);
                         break;
                     case Tags.UP:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeUp().transform.position), Vector3.forward);
