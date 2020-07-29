@@ -45,7 +45,7 @@ public class UI : MonoBehaviour {
     public void StartButton()
     {
         // Loads scene "1" and if the game is currently paused, sets the timescale to normal
-        SceneManager.LoadScene("1");
+        SceneManager.LoadScene(Tags.LEVELOFFSET);
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;
@@ -84,7 +84,7 @@ public class UI : MonoBehaviour {
     public void NextLevelButton()
     {
         AllNodes.ClearAllNodes();
-        string nextLevel = (iName + 1).ToString();
+        int nextLevel = (iName + Tags.LEVELOFFSET);
 
         SceneManager.LoadScene(nextLevel);
         if (Time.timeScale == 0)
