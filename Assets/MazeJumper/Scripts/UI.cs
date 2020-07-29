@@ -19,13 +19,15 @@ public class UI : MonoBehaviour {
     private Camera cameraScript;
 
     private string sceneName;
+    private string editedSceneName;
     private int iName;
 
     void Start()
     {
         sceneName = SceneManager.GetActiveScene().name;
+        editedSceneName = StringUtils.SplitAndTrimSceneName(sceneName);
         iName = 0;
-        int.TryParse(sceneName, out iName);
+        int.TryParse(editedSceneName, out iName);
         if (iName !=0)
         {
             player = GameObject.FindWithTag(Tags.PLAYER);
