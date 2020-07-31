@@ -32,6 +32,7 @@ public static class Tags
 
     // Scene
     public const string LEVELSCENE = "LevelScene";
+    public const int LEVELOFFSET = 2; // Update this when adding additional non-level scenes
 
     // Other GameObjects
     public const string ENVIRONMENT = "Environment";

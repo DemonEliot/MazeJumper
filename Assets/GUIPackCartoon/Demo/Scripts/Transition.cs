@@ -78,7 +78,7 @@ namespace Ricimi
 
             if (isLevel)
             {
-                SceneManager.LoadScene(int.Parse(level) + 1); // Update this when adding additional non-level scenes
+                SceneManager.LoadScene(int.Parse(level) + Tags.LEVELOFFSET - 1); 
             }
             else
             {
