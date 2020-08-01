@@ -5,8 +5,7 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
 
-    private GameObject nodeUp, nodeDown, nodeLeft, nodeRight;
-    private List<GameObject> nodesGoesHereList = new List<GameObject>();
+    private GameObject nodeUp, nodeDown, nodeLeft, nodeRight, nodeGoesHere;
     private GameObject environment;
 
     void Awake()
@@ -131,7 +130,12 @@ public class Node : MonoBehaviour
 
     public void AddNodeGoesHere(GameObject node)
     {
-        nodesGoesHereList.Add(node);
+        nodeGoesHere = node;
+    }
+
+    public GameObject GetNodeGoesHere()
+    {
+        return nodeGoesHere;
     }
 
     public GameObject GetNodeUp()
