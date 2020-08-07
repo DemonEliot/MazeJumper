@@ -33,25 +33,21 @@ public class Node : MonoBehaviour
                         if (child.position == this.transform.position + Vector3.forward)
                         {
                             nodeUp = child.gameObject;
-                            child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                         }
 
                         else if (child.position == this.transform.position + Vector3.back)
                         {
                             nodeDown = child.gameObject;
-                            child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                         }
 
                         else if (child.position == this.transform.position + Vector3.left)
                         {
                             nodeLeft = child.gameObject;
-                            child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                         }
 
                         else if (child.position == this.transform.position + Vector3.right)
                         {
                             nodeRight = child.gameObject;
-                            child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                         }
                     }
                     break;
@@ -114,7 +110,7 @@ public class Node : MonoBehaviour
                                 nodeRight = child.gameObject;
                                 break;
                         }
-                        child.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
+                        this.gameObject.GetComponent<Node>().AddNodeGoesHere(this.gameObject);
                         checkForNode = false;
                     }
                 }
