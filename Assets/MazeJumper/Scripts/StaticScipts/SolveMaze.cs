@@ -47,15 +47,22 @@ public static class SolveMaze
 
         Debug.Log("Gate Count: " + gateCountList[0]);
 
-
         foreach (GameObject node in solvedPaths[0])
         {
-            Debug.Log("Node location: " + Vector3Extension.AsVector2(node.transform.position));
             foreach (Transform child in node.GetComponentInChildren<Transform>())
                 if (child.gameObject.name == "Top")
                 {
                     child.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
                 }
+        }
+
+        if (currentNode.tag == Tags.GATE)
+        {
+            MazeDifficulty.CalculateMazeDifficulty(currentNode.transform.parent.transform.childCount, gateCountList[0]-1);
+        }
+        else
+        {
+            MazeDifficulty.CalculateMazeDifficulty(currentNode.transform.parent.transform.childCount, gateCountList[0]);
         }
     }
 
