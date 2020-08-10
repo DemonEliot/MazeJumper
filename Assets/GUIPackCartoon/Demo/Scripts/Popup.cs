@@ -72,5 +72,11 @@ namespace Ricimi
             if (image != null)
                 image.CrossFadeAlpha(0.0f, 0.2f, false);
         }
+
+        public void ResetLevels()
+        {
+            LevelManager.ResetLevelCompletion();
+            Debug.Log("Levels Reset, levels now equals: " + LevelManager.GetCompletedLevels());
+        }
     }
 }
