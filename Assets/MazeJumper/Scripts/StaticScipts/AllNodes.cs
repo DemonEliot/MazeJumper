@@ -27,4 +27,8 @@ public static class AllNodes
         allNodes.Clear();
     }
 
+    public static Dictionary<Vector2, GameObject> GetAllNodes()
+    {
+        return allNodes;
+    }
 }

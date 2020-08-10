@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelManager : GenericSingletonClass<LevelManager>
 {
-    private static int completedLevels = 1;
+    private static int completedLevels = 0;
 
     // Does this ever run? Class is static.. Meaning this is never attached to an object to 'start'
     private void Start()
@@ -36,6 +36,7 @@ public class LevelManager : GenericSingletonClass<LevelManager>
     public static void ResetLevelCompletion()
     {
         completedLevels = 0;
+        SaveSystem.SaveGameData();
     }
 
     public static void EndLevel(UI ui, string level)

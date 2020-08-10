@@ -26,6 +26,10 @@ public class CharacterManager : MonoBehaviour
     // UI
     private UI uiScript;
 
+    // Nodes
+    private GameObject currentNodeObject;
+    private Node currentNodeScript;
+
     // Use this for initialization
     void Start()
     {
@@ -41,6 +45,9 @@ public class CharacterManager : MonoBehaviour
         movementScript = this.gameObject.GetComponent<Movement>();
 
         uiScript = GameObject.FindWithTag(Tags.UI).GetComponent<UI>();
+
+        currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
+        currentNodeScript = currentNodeObject.GetComponent<Node>();
     }
 
     // Update is called once per frame
@@ -63,8 +70,8 @@ public class CharacterManager : MonoBehaviour
     {
         if (AllNodes.DoesDictionaryContainKey(Vector3Extension.AsVector2(this.transform.position)))
         { 
-            GameObject currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
-            Node currentNodeScript = currentNodeObject.GetComponent<Node>();
+            currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
+            currentNodeScript = currentNodeObject.GetComponent<Node>();
 
             if (!particleControllerScript.GetIsIntangible())
             {
@@ -224,5 +231,15 @@ public class CharacterManager : MonoBehaviour
     public void SetAnimationState(int state)
     {
             animate.SetAnimationState(state);
+    }
+
+    public GameObject GetCurrentNodeObject()
+    {
+        return currentNodeObject;
+    }
+
+    public Node GetCurrentNodeScript()
+    {
+        return currentNodeScript;
     }
 }
