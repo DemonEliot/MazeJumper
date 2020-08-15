@@ -11,7 +11,7 @@ public class CharacterManager : MonoBehaviour
 
     // Particle
     private ParticleController particleControllerScript;
-    private const int particleSpeed = 4;
+    private const float particleSpeed = 2f;
 
     // Main Camera
     private Camera cameraScript;
@@ -21,7 +21,7 @@ public class CharacterManager : MonoBehaviour
 
     // Movement
     Movement movementScript;
-    private const int characterSpeed = 2;
+    private const float characterSpeed = 2f;
 
     // UI
     private UI uiScript;
@@ -46,12 +46,14 @@ public class CharacterManager : MonoBehaviour
 
         uiScript = GameObject.FindWithTag(Tags.UI).GetComponent<UI>();
 
-        currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
+        currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(startPosition));
         currentNodeScript = currentNodeObject.GetComponent<Node>();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    //void FixedUpdate()
+    void Update()
+
     {
         // Before allowing movement, need to check if the player needs to move automatically, but only if they are not currently moving
         if (!movementScript.GetIsMoving())
@@ -66,11 +68,13 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    void CheckCurrentNode()
+    public void CheckCurrentNode()
     {
-        if (AllNodes.DoesDictionaryContainKey(Vector3Extension.AsVector2(this.transform.position)))
-        { 
-            currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(this.transform.position));
+        if (AllNodes.DoesDictionaryContainKey(movementScript.GetTargetPosition()))
+        //if (AllNodes.DoesDictionaryContainKey(Vector3Extension.AsVector2(currentNodeObject.transform.position)))
+        {
+            currentNodeObject = AllNodes.GetNodeByPosition(movementScript.GetTargetPosition());
+            //currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(currentNodeObject.transform.position));
             currentNodeScript = currentNodeObject.GetComponent<Node>();
 
             if (!particleControllerScript.GetIsIntangible())
@@ -128,6 +132,7 @@ public class CharacterManager : MonoBehaviour
     {
         movementScript.SetTargetPosition(newPosition);
         movementScript.RotateTowardsDirection(direction);
+        movementScript.SetPlayerShouldMove(true);
     }
 
     void ChangeToFlesh()
@@ -197,7 +202,7 @@ public class CharacterManager : MonoBehaviour
 
     void NodeCheck(Vector3 directionToMove)
     {
-        Vector2 newPosition = Vector3Extension.AsVector2(this.transform.position + directionToMove);
+        Vector2 newPosition = Vector3Extension.AsVector2(currentNodeObject.transform.position + directionToMove);
         if (AllNodes.DoesDictionaryContainKey(newPosition))
         {
             ChangeTargetPosition(newPosition, directionToMove);
@@ -214,6 +219,7 @@ public class CharacterManager : MonoBehaviour
         transform.position = startPosition;
         transform.rotation = startRotation;
         movementScript.SetPlayerCanMove(true);
+        movementScript.SetPlayerShouldMove(false);
         ChangeToFlesh();
         particleControllerScript.ClearParticle();
 
@@ -241,5 +247,10 @@ public class CharacterManager : MonoBehaviour
     public Node GetCurrentNodeScript()
     {
         return currentNodeScript;
+    }
+
+    public bool GetIsIntangible()
+    {
+        return particleControllerScript.GetIsIntangible();
     }
 }
