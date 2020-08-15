@@ -70,7 +70,6 @@ public class Movement : MonoBehaviour
             step = speed * Time.deltaTime;
         }
         
-        Debug.Log(step);
         if (step > 0.8f)
         {
             step = 0.8f;

@@ -86,7 +86,15 @@ public class UI : MonoBehaviour {
         AllNodes.ClearAllNodes();
         int nextLevel = (iName + Tags.LEVELOFFSET);
 
-        SceneManager.LoadScene(nextLevel);
+        if (nextLevel >= SceneManager.sceneCountInBuildSettings)
+        {
+            SceneManager.LoadScene(Tags.LEVELSCENE);
+        }
+        else
+        {
+            SceneManager.LoadScene(nextLevel);
+        }
+
         if (Time.timeScale == 0)
         {
             Time.timeScale = 1;
