@@ -30,6 +30,9 @@ public class CharacterManager : MonoBehaviour
     private GameObject currentNodeObject;
     private Node currentNodeScript;
 
+    // Portal Script
+    private Portal portalScript;
+
     // Use this for initialization
     void Start()
     {
@@ -48,6 +51,8 @@ public class CharacterManager : MonoBehaviour
 
         currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(startPosition));
         currentNodeScript = currentNodeObject.GetComponent<Node>();
+
+        portalScript = FindObjectOfType<Portal>();
     }
 
     // Update is called once per frame
@@ -71,10 +76,8 @@ public class CharacterManager : MonoBehaviour
     public void CheckCurrentNode()
     {
         if (AllNodes.DoesDictionaryContainKey(movementScript.GetTargetPosition()))
-        //if (AllNodes.DoesDictionaryContainKey(Vector3Extension.AsVector2(currentNodeObject.transform.position)))
         {
             currentNodeObject = AllNodes.GetNodeByPosition(movementScript.GetTargetPosition());
-            //currentNodeObject = AllNodes.GetNodeByPosition(Vector3Extension.AsVector2(currentNodeObject.transform.position));
             currentNodeScript = currentNodeObject.GetComponent<Node>();
 
             if (!particleControllerScript.GetIsIntangible())
@@ -87,18 +90,22 @@ public class CharacterManager : MonoBehaviour
                         break;
                     case Tags.UP:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeUp().transform.position), Vector3.forward);
+                        portalScript.InstantiatePortal(currentNodeObject.transform.position, true);
                         ChangeToParticle();
                         break;
                     case Tags.DOWN:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeDown().transform.position), Vector3.back);
+                        portalScript.InstantiatePortal(currentNodeObject.transform.position, true);
                         ChangeToParticle();
                         break;
                     case Tags.LEFT:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeLeft().transform.position), Vector3.left);
+                        portalScript.InstantiatePortal(currentNodeObject.transform.position, false);
                         ChangeToParticle();
                         break;
                     case Tags.RIGHT:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeRight().transform.position), Vector3.right);
+                        portalScript.InstantiatePortal(currentNodeObject.transform.position, false);
                         ChangeToParticle();
                         break;
                 }
@@ -110,17 +117,22 @@ public class CharacterManager : MonoBehaviour
                 {
                     case Tags.UP:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeUp().transform.position), Vector3.forward);
+                        portalScript.InstantiatePortal(currentNodeObject.transform.position, true);
                         break;
                     case Tags.DOWN:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeDown().transform.position), Vector3.back);
+                        portalScript.InstantiatePortal(currentNodeObject.transform.position, true);
                         break;
                     case Tags.LEFT:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeLeft().transform.position), Vector3.left);
+                        portalScript.InstantiatePortal(currentNodeObject.transform.position, false);
                         break;
                     case Tags.RIGHT:
                         ChangeTargetPosition(Vector3Extension.AsVector2(currentNodeScript.GetNodeRight().transform.position), Vector3.right);
+                        portalScript.InstantiatePortal(currentNodeObject.transform.position, false);
                         break;
                     case Tags.GATE:
+                        portalScript.InstantiateGate(currentNodeObject.transform.position);
                         ChangeToFlesh();
                         break;
                 }
