@@ -52,7 +52,7 @@ namespace Ricimi
             animator = levelGroup.GetComponent<Animator>();
             levelGroupRectTransform = levelGroup.GetComponent<RectTransform>();
             moveScreen = false;
-            totalLevels = SceneManager.sceneCountInBuildSettings - 2; // If any additional non-level screens are added, this needs to be increased
+            totalLevels = SceneManager.sceneCountInBuildSettings - Tags.LEVELOFFSET; // If any additional non-level screens are added, this needs to be increased
             numLevelIndexes = (((totalLevels - 1) / 10) + 1);
 
             CreateLevelsOnScreen();
@@ -72,7 +72,10 @@ namespace Ricimi
                 endPosition = startPosition + new Vector3(levelPivotOffsetX * levelOffsetMultiplier, 0, 0);
 
                 moveScreen = true;
-                EnablePrevLevelButton();
+                if (currentLevelIndex != 1)
+                {
+                    EnablePrevLevelButton();
+                }
                 DisableNextLevelButton();  
             }
 
